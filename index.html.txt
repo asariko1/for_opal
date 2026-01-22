@@ -1,0 +1,855 @@
+<script>( () => {
+  const g = (C) => window.parent.postMessage(
+    {
+      type: "app-sandbox-request-open-popup",
+      url: C.toString()
+    },
+    "https://opal.google"
+  );
+  Object.defineProperty(window, "open", {
+    value: function(C) {
+      C && g(new URL(C));
+    },
+    writable: !1,
+    configurable: !1,
+    enumerable: !1
+  });
+  const I = (C, i) => C.composedPath().find((A) => A.localName === i);
+  window.addEventListener(
+    "click",
+    (C) => {
+      const i = I(C, "a");
+      i && (g(new URL(i.href)), C.preventDefault(), C.stopImmediatePropagation());
+    },
+    !0
+  );
+} )();</script><!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sentiment Analysis Report</title>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'primary-dark': '#0f172a', /* Slate 900 */
+                        'secondary-dark': '#1e293b', /* Slate 800 */
+                        'card-bg-dark': '#2c3e50', /* Darker blue-gray */
+                        'text-light': '#e2e8f0', /* Slate 200 */
+                        'text-muted': '#94a3b8', /* Slate 400 */
+                        'positive-green': '#10b981', /* Emerald 500 */
+                        'negative-red': '#ef4444', /* Red 500 */
+                        'warning-orange': '#f97316', /* Orange 500 */
+                        'feedback-card': '#3b4b5d', /* Custom slightly lighter than secondary-dark */
+                    },
+                    fontFamily: {
+                        display: ['Outfit', 'sans-serif'],
+                        body: ['Inter', 'sans-serif'],
+                    },
+                    boxShadow: {
+                        'glass-sm': '0 4px 6px rgba(0, 0, 0, 0.1), 0 1px 3px rgba(0, 0, 0, 0.08)',
+                        'glass-md': '0 10px 15px rgba(0, 0, 0, 0.15), 0 4px 6px rgba(0, 0, 0, 0.1)',
+                    },
+                    animation: {
+                        'fade-in-up': 'fadeInUp 0.5s ease-out forwards',
+                        'slide-in-right': 'slideInRight 0.5s ease-out forwards',
+                    },
+                    keyframes: {
+                        fadeInUp: {
+                            '0%': { opacity: 0, transform: 'translateY(20px)' },
+                            '100%': { opacity: 1, transform: 'translateY(0)' },
+                        },
+                        slideInRight: {
+                            '0%': { opacity: 0, transform: 'translateX(20px)' },
+                            '100%': { opacity: 1, transform: 'translateX(0)' },
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body {
+            background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+            background-attachment: fixed;
+            color: #e2e8f0;
+            font-family: 'Inter', sans-serif;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
+        h1, h2, h3, h4 {
+            font-family: 'Outfit', sans-serif;
+            color: #f8fafc; /* Lighter white for headings */
+        }
+
+        .card-glass {
+            background-color: rgba(44, 62, 80, 0.6); /* card-bg-dark with transparency */
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border: 1px solid rgba(71, 85, 105, 0.3); /* Slate 600 with transparency */
+            transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+        }
+
+        .card-glass:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.3);
+        }
+
+        .gradient-positive {
+            background: linear-gradient(45deg, #10b981, #059669);
+        }
+        .gradient-negative {
+            background: linear-gradient(45deg, #ef4444, #dc2626);
+        }
+        .gradient-feedback {
+            background: linear-gradient(45deg, #3b4b5d, #2c3e50);
+        }
+
+        .animated-section > * {
+            opacity: 0;
+            animation: fadeInUp 0.7s ease-out forwards;
+        }
+
+        .animated-section > *:nth-child(1) { animation-delay: 0.1s; }
+        .animated-section > *:nth-child(2) { animation-delay: 0.2s; }
+        .animated-section > *:nth-child(3) { animation-delay: 0.3s; }
+        /* Add more if needed, or use a JS Intersection Observer for complex animations */
+    </style>
+</head>
+<body class="font-body antialiased">
+    <div class="container mx-auto px-6 py-12 lg:px-8">
+
+        <!-- Header -->
+        <header class="text-center mb-16 animated-section">
+            <h1 class="text-5xl md:text-6xl font-display font-bold mb-4 bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-indigo-600 animate-fade-in-up">
+                Sentiment Analysis Report
+            </h1>
+            <p class="text-text-muted text-lg md:text-xl animate-fade-in-up" style="animation-delay: 0.3s;">
+                Unveiling User Feedback with Precision
+            </p>
+        </header>
+
+        <!-- Overall Summary Section -->
+        <section class="mb-20 animated-section">
+            <h2 class="text-4xl font-display font-semibold mb-10 text-center animate-fade-in-up" style="animation-delay: 0.5s;">Overall Summary</h2>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-5xl mx-auto">
+                <div class="card-glass p-8 rounded-xl shadow-glass-md flex flex-col items-center justify-center text-center transform hover:scale-105 transition duration-300 animate-fade-in-up" style="animation-delay: 0.6s;">
+                    <p class="text-text-muted text-lg uppercase tracking-wider mb-2">Total Comments</p>
+                    <p class="text-6xl font-display font-bold text-blue-300">100</p>
+                </div>
+                <div class="card-glass p-8 rounded-xl shadow-glass-md flex flex-col items-center justify-center text-center transform hover:scale-105 transition duration-300 animate-fade-in-up" style="animation-delay: 0.7s;">
+                    <p class="text-text-muted text-lg uppercase tracking-wider mb-2">Positive Comments</p>
+                    <p class="text-6xl font-display font-bold text-positive-green">64</p>
+                </div>
+                <div class="card-glass p-8 rounded-xl shadow-glass-md flex flex-col items-center justify-center text-center transform hover:scale-105 transition duration-300 animate-fade-in-up" style="animation-delay: 0.8s;">
+                    <p class="text-text-muted text-lg uppercase tracking-wider mb-2">Negative Comments</p>
+                    <p class="text-6xl font-display font-bold text-negative-red">36</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Detailed Sentiment Analysis -->
+        <section class="mb-20 animated-section">
+            <h2 class="text-4xl font-display font-semibold mb-10 text-center animate-fade-in-up" style="animation-delay: 0.9s;">Detailed Sentiment Analysis</h2>
+
+            <!-- Positive Comments -->
+            <h3 class="text-3xl font-display font-medium mb-6 text-positive-green animate-fade-in-up" style="animation-delay: 1.0s;">Positive Comments <span class="text-text-muted text-xl">(64)</span></h3>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-12">
+                <!-- Positive Comment Cards -->
+                <div class="card-glass p-6 rounded-lg shadow-sm border-l-4 border-positive-green hover:shadow-lg transition duration-200 animate-slide-in-right">
+                    <p class="text-text-light font-semibold mb-2">User ID 9174</p>
+                    <p class="text-text-muted text-sm italic">"The service was very good, and the ship offered so much to do. I enjoyed the ports, the"</p>
+                </div>
+                <div class="card-glass p-6 rounded-lg shadow-sm border-l-4 border-positive-green hover:shadow-lg transition duration-200 animate-slide-in-right" style="animation-delay: 0.05s;">
+                    <p class="text-text-light font-semibold mb-2">User ID 11596</p>
+                    <p class="text-text-muted text-sm italic">"Because it's a great cruise"</p>
+                </div>
+                <div class="card-glass p-6 rounded-lg shadow-sm border-l-4 border-positive-green hover:shadow-lg transition duration-200 animate-slide-in-right" style="animation-delay: 0.1s;">
+                    <p class="text-text-light font-semibold mb-2">User ID 8298</p>
+                    <p class="text-text-muted text-sm italic">"The primary reason was we have really good time with our friends and the most was the nic"</p>
+                </div>
+                <div class="card-glass p-6 rounded-lg shadow-sm border-l-4 border-positive-green hover:shadow-lg transition duration-200 animate-slide-in-right" style="animation-delay: 0.15s;">
+                    <p class="text-text-light font-semibold mb-2">User ID 11704</p>
+                    <p class="text-text-muted text-sm italic">"Very clean, great time, great service."</p>
+                </div>
+                <div class="card-glass p-6 rounded-lg shadow-sm border-l-4 border-positive-green hover:shadow-lg transition duration-200 animate-slide-in-right" style="animation-delay: 0.2s;">
+                    <p class="text-text-light font-semibold mb-2">User ID 9712</p>
+                    <p class="text-text-muted text-sm italic">"Everything was great !!"</p>
+                </div>
+                <div class="card-glass p-6 rounded-lg shadow-sm border-l-4 border-positive-green hover:shadow-lg transition duration-200 animate-slide-in-right" style="animation-delay: 0.25s;">
+                    <p class="text-text-light font-semibold mb-2">User ID 8321</p>
+                    <p class="text-text-muted text-sm italic">"Nice ship, good entertainment great specialty restaurants"</p>
+                </div>
+                <div class="card-glass p-6 rounded-lg shadow-sm border-l-4 border-positive-green hover:shadow-lg transition duration-200 animate-slide-in-right" style="animation-delay: 0.3s;">
+                    <p class="text-text-light font-semibold mb-2">User ID 12142</p>
+                    <p class="text-text-muted text-sm italic">"Hospitality, cleanliness, staff, and environment."</p>
+                </div>
+                <div class="card-glass p-6 rounded-lg shadow-sm border-l-4 border-positive-green hover:shadow-lg transition duration-200 animate-slide-in-right" style="animation-delay: 0.35s;">
+                    <p class="text-text-light font-semibold mb-2">User ID 9416</p>
+                    <p class="text-text-muted text-sm italic">"This was my first time on a cruise and I enjoyed every minute of it. It was sure an eye c"</p>
+                </div>
+                <div class="card-glass p-6 rounded-lg shadow-sm border-l-4 border-positive-green hover:shadow-lg transition duration-200 animate-slide-in-right" style="animation-delay: 0.4s;">
+                    <p class="text-text-light font-semibold mb-2">User ID 6324</p>
+                    <p class="text-text-muted text-sm italic">"Food and customer service was fantastic! The main dining hall 3rd floor waitstaff Jun, 5"</p>
+                </div>
+                <div class="card-glass p-6 rounded-lg shadow-sm border-l-4 border-positive-green hover:shadow-lg transition duration-200 animate-slide-in-right" style="animation-delay: 0.45s;">
+                    <p class="text-text-light font-semibold mb-2">User ID 9213</p>
+                    <p class="text-text-muted text-sm italic">"Et selskap som er profesjonelt, og har et stort utvalg av båter i ulike størrelser, og s"</p>
+                </div>
+                <div class="card-glass p-6 rounded-lg shadow-sm border-l-4 border-positive-green hover:shadow-lg transition duration-200 animate-slide-in-right" style="animation-delay: 0.5s;">
+                    <p class="text-text-light font-semibold mb-2">User ID 7608</p>
+                    <p class="text-text-muted text-sm italic">"Entertainment Service Food"</p>
+                </div>
+                <div class="card-glass p-6 rounded-lg shadow-sm border-l-4 border-positive-green hover:shadow-lg transition duration-200 animate-slide-in-right" style="animation-delay: 0.55s;">
+                    <p class="text-text-light font-semibold mb-2">User ID 11587</p>
+                    <p class="text-text-muted text-sm italic">"The level of service was superb. If you don't remember what good customer service feels"</p>
+                </div>
+                <div class="card-glass p-6 rounded-lg shadow-sm border-l-4 border-positive-green hover:shadow-lg transition duration-200 animate-slide-in-right" style="animation-delay: 0.6s;">
+                    <p class="text-text-light font-semibold mb-2">User ID 6535</p>
+                    <p class="text-text-muted text-sm italic">"Amazing experience on my whole 7 day cruise shout-out to all the amazing staff who made r"</p>
+                </div>
+                <div class="card-glass p-6 rounded-lg shadow-sm border-l-4 border-positive-green hover:shadow-lg transition duration-200 animate-slide-in-right" style="animation-delay: 0.65s;">
+                    <p class="text-text-light font-semibold mb-2">User ID 6550</p>
+                    <p class="text-text-muted text-sm italic">"El clima general del barco donde todo era un ""si"". Los detalles y la atención puesta e"</p>
+                </div>
+                <div class="card-glass p-6 rounded-lg shadow-sm border-l-4 border-positive-green hover:shadow-lg transition duration-200 animate-slide-in-right" style="animation-delay: 0.7s;">
+                    <p class="text-text-light font-semibold mb-2">User ID 12651</p>
+                    <p class="text-text-muted text-sm italic">"I am grateful for the efforts of everyone who helped make my 50th birthday celebration"</p>
+                </div>
+                <div class="card-glass p-6 rounded-lg shadow-sm border-l-4 border-positive-green hover:shadow-lg transition duration-200 animate-slide-in-right" style="animation-delay: 0.75s;">
+                    <p class="text-text-light font-semibold mb-2">User ID 11609</p>
+                    <p class="text-text-muted text-sm italic">"How nice all of the employees are and how clean the ship stays throughout the week. Just"</p>
+                </div>
+                <div class="card-glass p-6 rounded-lg shadow-sm border-l-4 border-positive-green hover:shadow-lg transition duration-200 animate-slide-in-right" style="animation-delay: 0.8s;">
+                    <p class="text-text-light font-semibold mb-2">User ID 7535</p>
+                    <p class="text-text-muted text-sm italic">"Great ships, good food and service!"</p>
+                </div>
+                <div class="card-glass p-6 rounded-lg shadow-sm border-l-4 border-positive-green hover:shadow-lg transition duration-200 animate-slide-in-right" style="animation-delay: 0.85s;">
+                    <p class="text-text-light font-semibold mb-2">User ID 6612</p>
+                    <p class="text-text-muted text-sm italic">"Detta var vår 4:e kryssning, 2 med RC och 2 med Celebrity. Vi tycker att allt har blivit"</p>
+                </div>
+                <div class="card-glass p-6 rounded-lg shadow-sm border-l-4 border-positive-green hover:shadow-lg transition duration-200 animate-slide-in-right" style="animation-delay: 0.9s;">
+                    <p class="text-text-light font-semibold mb-2">User ID 7190</p>
+                    <p class="text-text-muted text-sm italic">"we had a great week and the balance of relaxation and activities was perfect."</p>
+                </div>
+                <div class="card-glass p-6 rounded-lg shadow-sm border-l-4 border-positive-green hover:shadow-lg transition duration-200 animate-slide-in-right" style="animation-delay: 0.95s;">
+                    <p class="text-text-light font-semibold mb-2">User ID 11644</p>
+                    <p class="text-text-muted text-sm italic">"We had a wonderful vacation, the service was exemplary, and the food was reasonable cor"</p>
+                </div>
+                <div class="card-glass p-6 rounded-lg shadow-sm border-l-4 border-positive-green hover:shadow-lg transition duration-200 animate-slide-in-right" style="animation-delay: 1.0s;">
+                    <p class="text-text-light font-semibold mb-2">User ID 9203</p>
+                    <p class="text-text-muted text-sm italic">"Because Royal Caribbean is the best Cruise Line out there!!"</p>
+                </div>
+                <div class="card-glass p-6 rounded-lg shadow-sm border-l-4 border-positive-green hover:shadow-lg transition duration-200 animate-slide-in-right" style="animation-delay: 1.05s;">
+                    <p class="text-text-light font-semibold mb-2">User ID 12278</p>
+                    <p class="text-text-muted text-sm italic">"Fun, lots to do no matter what interests you."</p>
+                </div>
+                <div class="card-glass p-6 rounded-lg shadow-sm border-l-4 border-positive-green hover:shadow-lg transition duration-200 animate-slide-in-right" style="animation-delay: 1.1s;">
+                    <p class="text-text-light font-semibold mb-2">User ID 7603</p>
+                    <p class="text-text-muted text-sm italic">"As you all say I'm ""Loyal to Royal"" no cruise line does it better. As far as entertain"</p>
+                </div>
+                <div class="card-glass p-6 rounded-lg shadow-sm border-l-4 border-positive-green hover:shadow-lg transition duration-200 animate-slide-in-right" style="animation-delay: 1.15s;">
+                    <p class="text-text-light font-semibold mb-2">User ID 6190</p>
+                    <p class="text-text-muted text-sm italic">"Everything ran very smoothly, the staff were excellent as well as the entertainment."</p>
+                </div>
+                <div class="card-glass p-6 rounded-lg shadow-sm border-l-4 border-positive-green hover:shadow-lg transition duration-200 animate-slide-in-right" style="animation-delay: 1.2s;">
+                    <p class="text-text-light font-semibold mb-2">User ID 9292</p>
+                    <p class="text-text-muted text-sm italic">"Amenities, activities, cleanliness, friendly staff, quality of shows"</p>
+                </div>
+                <div class="card-glass p-6 rounded-lg shadow-sm border-l-4 border-positive-green hover:shadow-lg transition duration-200 animate-slide-in-right" style="animation-delay: 1.25s;">
+                    <p class="text-text-light font-semibold mb-2">User ID 8574</p>
+                    <p class="text-text-muted text-sm italic">"Your staff!"</p>
+                </div>
+                <div class="card-glass p-6 rounded-lg shadow-sm border-l-4 border-positive-green hover:shadow-lg transition duration-200 animate-slide-in-right" style="animation-delay: 1.3s;">
+                    <p class="text-text-light font-semibold mb-2">User ID 8622</p>
+                    <p class="text-text-muted text-sm italic">"Reasonable price, good food and shows"</p>
+                </div>
+                <div class="card-glass p-6 rounded-lg shadow-sm border-l-4 border-positive-green hover:shadow-lg transition duration-200 animate-slide-in-right" style="animation-delay: 1.35s;">
+                    <p class="text-text-light font-semibold mb-2">User ID 7724</p>
+                    <p class="text-text-muted text-sm italic">"Shows food and staff were greatl"</p>
+                </div>
+                <div class="card-glass p-6 rounded-lg shadow-sm border-l-4 border-positive-green hover:shadow-lg transition duration-200 animate-slide-in-right" style="animation-delay: 1.4s;">
+                    <p class="text-text-light font-semibold mb-2">User ID 14142</p>
+                    <p class="text-text-muted text-sm italic">"I have always cruised RCCL and it is clean, well put together events, and the kindest"</p>
+                </div>
+                <div class="card-glass p-6 rounded-lg shadow-sm border-l-4 border-positive-green hover:shadow-lg transition duration-200 animate-slide-in-right" style="animation-delay: 1.45s;">
+                    <p class="text-text-light font-semibold mb-2">User ID 9546</p>
+                    <p class="text-text-muted text-sm italic">"Great for families"</p>
+                </div>
+                <div class="card-glass p-6 rounded-lg shadow-sm border-l-4 border-positive-green hover:shadow-lg transition duration-200 animate-slide-in-right" style="animation-delay: 1.5s;">
+                    <p class="text-text-light font-semibold mb-2">User ID 11152</p>
+                    <p class="text-text-muted text-sm italic">"___ _____ __-___---- ______----- 4, 2027."</p>
+                </div>
+                <div class="card-glass p-6 rounded-lg shadow-sm border-l-4 border-positive-green hover:shadow-lg transition duration-200 animate-slide-in-right" style="animation-delay: 1.55s;">
+                    <p class="text-text-light font-semibold mb-2">User ID 12204</p>
+                    <p class="text-text-muted text-sm italic">"100% PERFECT"</p>
+                </div>
+                <div class="card-glass p-6 rounded-lg shadow-sm border-l-4 border-positive-green hover:shadow-lg transition duration-200 animate-slide-in-right" style="animation-delay: 1.6s;">
+                    <p class="text-text-light font-semibold mb-2">User ID 6587</p>
+                    <p class="text-text-muted text-sm italic">"Very good service all is excellent"</p>
+                </div>
+                <div class="card-glass p-6 rounded-lg shadow-sm border-l-4 border-positive-green hover:shadow-lg transition duration-200 animate-slide-in-right" style="animation-delay: 1.65s;">
+                    <p class="text-text-light font-semibold mb-2">User ID 9579</p>
+                    <p class="text-text-muted text-sm italic">" Mardel was amazing. Was very helpful and took really good care of us."</p>
+                </div>
+                <div class="card-glass p-6 rounded-lg shadow-sm border-l-4 border-positive-green hover:shadow-lg transition duration-200 animate-slide-in-right" style="animation-delay: 1.7s;">
+                    <p class="text-text-light font-semibold mb-2">User ID 12728</p>
+                    <p class="text-text-muted text-sm italic">"The service was impeccable and personal. From our amazing stateroom attendant's, Vaness"</p>
+                </div>
+                <div class="card-glass p-6 rounded-lg shadow-sm border-l-4 border-positive-green hover:shadow-lg transition duration-200 animate-slide-in-right" style="animation-delay: 1.75s;">
+                    <p class="text-text-light font-semibold mb-2">User ID 14254</p>
+                    <p class="text-text-muted text-sm italic">"Even though we are seniors, we love the energy of Royal Caribbean."</p>
+                </div>
+                <div class="card-glass p-6 rounded-lg shadow-sm border-l-4 border-positive-green hover:shadow-lg transition duration-200 animate-slide-in-right" style="animation-delay: 1.8s;">
+                    <p class="text-text-light font-semibold mb-2">User ID 10722</p>
+                    <p class="text-text-muted text-sm italic">"Beautiful ship, wonderful service, had a great time!"</p>
+                </div>
+                <div class="card-glass p-6 rounded-lg shadow-sm border-l-4 border-positive-green hover:shadow-lg transition duration-200 animate-slide-in-right" style="animation-delay: 1.85s;">
+                    <p class="text-text-light font-semibold mb-2">User ID 9442</p>
+                    <p class="text-text-muted text-sm italic">"We always cruise with Royal"</p>
+                </div>
+                <div class="card-glass p-6 rounded-lg shadow-sm border-l-4 border-positive-green hover:shadow-lg transition duration-200 animate-slide-in-right" style="animation-delay: 1.9s;">
+                    <p class="text-text-light font-semibold mb-2">User ID 14176</p>
+                    <p class="text-text-muted text-sm italic">"This was our first cruise and I can only describe it as a dream it was perfect in every"</p>
+                </div>
+                <div class="card-glass p-6 rounded-lg shadow-sm border-l-4 border-positive-green hover:shadow-lg transition duration-200 animate-slide-in-right" style="animation-delay: 1.95s;">
+                    <p class="text-text-light font-semibold mb-2">User ID 10711</p>
+                    <p class="text-text-muted text-sm italic">"Great food service in dining room"</p>
+                </div>
+                <div class="card-glass p-6 rounded-lg shadow-sm border-l-4 border-positive-green hover:shadow-lg transition duration-200 animate-slide-in-right" style="animation-delay: 2.0s;">
+                    <p class="text-text-light font-semibold mb-2">User ID 10643</p>
+                    <p class="text-text-muted text-sm italic">"Friendly staff. Lots of food choices. Food was very good."</p>
+                </div>
+                <div class="card-glass p-6 rounded-lg shadow-sm border-l-4 border-positive-green hover:shadow-lg transition duration-200 animate-slide-in-right" style="animation-delay: 2.05s;">
+                    <p class="text-text-light font-semibold mb-2">User ID 7406</p>
+                    <p class="text-text-muted text-sm italic">"La cordialità del personale, l' organizzazione delle giornate a bordo e' la ragione prin"</p>
+                </div>
+                <div class="card-glass p-6 rounded-lg shadow-sm border-l-4 border-positive-green hover:shadow-lg transition duration-200 animate-slide-in-right" style="animation-delay: 2.1s;">
+                    <p class="text-text-light font-semibold mb-2">User ID 9315</p>
+                    <p class="text-text-muted text-sm italic">"Variety of activities for both young and adults, great restaurants and service. Quality"</p>
+                </div>
+                <div class="card-glass p-6 rounded-lg shadow-sm border-l-4 border-positive-green hover:shadow-lg transition duration-200 animate-slide-in-right" style="animation-delay: 2.15s;">
+                    <p class="text-text-light font-semibold mb-2">User ID 7582</p>
+                    <p class="text-text-muted text-sm italic">"Good service. Quality ships"</p>
+                </div>
+                <div class="card-glass p-6 rounded-lg shadow-sm border-l-4 border-positive-green hover:shadow-lg transition duration-200 animate-slide-in-right" style="animation-delay: 2.2s;">
+                    <p class="text-text-light font-semibold mb-2">User ID 9504</p>
+                    <p class="text-text-muted text-sm italic">"Clean ship with multiple activities going on at same time. Food is excellent."</p>
+                </div>
+                <div class="card-glass p-6 rounded-lg shadow-sm border-l-4 border-positive-green hover:shadow-lg transition duration-200 animate-slide-in-right" style="animation-delay: 2.25s;">
+                    <p class="text-text-light font-semibold mb-2">User ID 8102</p>
+                    <p class="text-text-muted text-sm italic">"Royal always delivers. There is something for everybody!"</p>
+                </div>
+                <div class="card-glass p-6 rounded-lg shadow-sm border-l-4 border-positive-green hover:shadow-lg transition duration-200 animate-slide-in-right" style="animation-delay: 2.3s;">
+                    <p class="text-text-light font-semibold mb-2">User ID 7584</p>
+                    <p class="text-text-muted text-sm italic">"Excellent service. Despite of the large number attending the cruise, everything went ve"</p>
+                </div>
+                <div class="card-glass p-6 rounded-lg shadow-sm border-l-4 border-positive-green hover:shadow-lg transition duration-200 animate-slide-in-right" style="animation-delay: 2.35s;">
+                    <p class="text-text-light font-semibold mb-2">User ID 7704</p>
+                    <p class="text-text-muted text-sm italic">"We had a great time. There was a great selection of entertainment. The ship was very clea"</p>
+                </div>
+                <div class="card-glass p-6 rounded-lg shadow-sm border-l-4 border-positive-green hover:shadow-lg transition duration-200 animate-slide-in-right" style="animation-delay: 2.4s;">
+                    <p class="text-text-light font-semibold mb-2">User ID 8230</p>
+                    <p class="text-text-muted text-sm italic">"The friendliness of the staff and the level of service provided was a game changer."</p>
+                </div>
+                <div class="card-glass p-6 rounded-lg shadow-sm border-l-4 border-positive-green hover:shadow-lg transition duration-200 animate-slide-in-right" style="animation-delay: 2.45s;">
+                    <p class="text-text-light font-semibold mb-2">User ID 7516</p>
+                    <p class="text-text-muted text-sm italic">"Royal Caribbean staff are fantastic and friendly helpful the room was clean and food and"</p>
+                </div>
+                <div class="card-glass p-6 rounded-lg shadow-sm border-l-4 border-positive-green hover:shadow-lg transition duration-200 animate-slide-in-right" style="animation-delay: 2.5s;">
+                    <p class="text-text-light font-semibold mb-2">User ID 14286</p>
+                    <p class="text-text-muted text-sm italic">"The ship was beautiful The staff was beyond wonderful They were so courteous and helpful."</p>
+                </div>
+                <div class="card-glass p-6 rounded-lg shadow-sm border-l-4 border-positive-green hover:shadow-lg transition duration-200 animate-slide-in-right" style="animation-delay: 2.55s;">
+                    <p class="text-text-light font-semibold mb-2">User ID 14692</p>
+                    <p class="text-text-muted text-sm italic">"Everything was very clean and nice and the food was very good and all of the staff was e"</p>
+                </div>
+                <div class="card-glass p-6 rounded-lg shadow-sm border-l-4 border-positive-green hover:shadow-lg transition duration-200 animate-slide-in-right" style="animation-delay: 2.6s;">
+                    <p class="text-text-light font-semibold mb-2">User ID 9308</p>
+                    <p class="text-text-muted text-sm italic">"Great customer service, food, and entertainment"</p>
+                </div>
+                <div class="card-glass p-6 rounded-lg shadow-sm border-l-4 border-positive-green hover:shadow-lg transition duration-200 animate-slide-in-right" style="animation-delay: 2.65s;">
+                    <p class="text-text-light font-semibold mb-2">User ID 7230</p>
+                    <p class="text-text-muted text-sm italic">"If a friend wants to cruise, or likes cruises, I think Royal Caribbean is a great exper"</p>
+                </div>
+                <div class="card-glass p-6 rounded-lg shadow-sm border-l-4 border-positive-green hover:shadow-lg transition duration-200 animate-slide-in-right" style="animation-delay: 2.7s;">
+                    <p class="text-text-light font-semibold mb-2">User ID 9181</p>
+                    <p class="text-text-muted text-sm italic">"Overall experience"</p>
+                </div>
+                <div class="card-glass p-6 rounded-lg shadow-sm border-l-4 border-positive-green hover:shadow-lg transition duration-200 animate-slide-in-right" style="animation-delay: 2.75s;">
+                    <p class="text-text-light font-semibold mb-2">User ID 11170</p>
+                    <p class="text-text-muted text-sm italic">"We enjoy Royal cruises. Had a good time on the Symphony, very nice ship and staff."</p>
+                </div>
+                <div class="card-glass p-6 rounded-lg shadow-sm border-l-4 border-positive-green hover:shadow-lg transition duration-200 animate-slide-in-right" style="animation-delay: 2.8s;">
+                    <p class="text-text-light font-semibold mb-2">User ID 9140</p>
+                    <p class="text-text-muted text-sm italic">"This is my second cruise with Royal Caribbean and each time the service, facilities, and"</p>
+                </div>
+                <div class="card-glass p-6 rounded-lg shadow-sm border-l-4 border-positive-green hover:shadow-lg transition duration-200 animate-slide-in-right" style="animation-delay: 2.85s;">
+                    <p class="text-text-light font-semibold mb-2">User ID 11725</p>
+                    <p class="text-text-muted text-sm italic">"I love the staff, Juli and Anas were so kind and amazing they treated us like family"</p>
+                </div>
+                <div class="card-glass p-6 rounded-lg shadow-sm border-l-4 border-positive-green hover:shadow-lg transition duration-200 animate-slide-in-right" style="animation-delay: 2.9s;">
+                    <p class="text-text-light font-semibold mb-2">User ID 12556</p>
+                    <p class="text-text-muted text-sm italic">"Cleanliness attention to detail professionalism housekeeping and the service and activi"</p>
+                </div>
+                <div class="card-glass p-6 rounded-lg shadow-sm border-l-4 border-positive-green hover:shadow-lg transition duration-200 animate-slide-in-right" style="animation-delay: 2.95s;">
+                    <p class="text-text-light font-semibold mb-2">User ID 9714</p>
+                    <p class="text-text-muted text-sm italic">"Servicio alimentos y bebidas todo excelente"</p>
+                </div>
+                <div class="card-glass p-6 rounded-lg shadow-sm border-l-4 border-positive-green hover:shadow-lg transition duration-200 animate-slide-in-right" style="animation-delay: 3.0s;">
+                    <p class="text-text-light font-semibold mb-2">User ID 10307</p>
+                    <p class="text-text-muted text-sm italic">"Hard to say one thing. It's just a great overall experience for the family."</p>
+                </div>
+                <div class="card-glass p-6 rounded-lg shadow-sm border-l-4 border-positive-green hover:shadow-lg transition duration-200 animate-slide-in-right" style="animation-delay: 3.05s;">
+                    <p class="text-text-light font-semibold mb-2">User ID 9452</p>
+                    <p class="text-text-muted text-sm italic">"Beautiful ship, friendly staff, excellent broadway show and quality service."</p>
+                </div>
+                <div class="card-glass p-6 rounded-lg shadow-sm border-l-4 border-positive-green hover:shadow-lg transition duration-200 animate-slide-in-right" style="animation-delay: 3.1s;">
+                    <p class="text-text-light font-semibold mb-2">User ID 12195</p>
+                    <p class="text-text-muted text-sm italic">"Cruzeiro de alto nível, com excelente atrações e menu dos restaurantes. Funcionários mu"</p>
+                </div>
+                <div class="card-glass p-6 rounded-lg shadow-sm border-l-4 border-positive-green hover:shadow-lg transition duration-200 animate-slide-in-right" style="animation-delay: 3.15s;">
+                    <p class="text-text-light font-semibold mb-2">User ID 14319</p>
+                    <p class="text-text-muted text-sm italic">"Son de calidad"</p>
+                </div>
+                <div class="card-glass p-6 rounded-lg shadow-sm border-l-4 border-positive-green hover:shadow-lg transition duration-200 animate-slide-in-right" style="animation-delay: 3.2s;">
+                    <p class="text-text-light font-semibold mb-2">User ID 12192</p>
+                    <p class="text-text-muted text-sm italic">"Great, attentive staff. Good ship."</p>
+                </div>
+                <div class="card-glass p-6 rounded-lg shadow-sm border-l-4 border-positive-green hover:shadow-lg transition duration-200 animate-slide-in-right" style="animation-delay: 3.25s;">
+                    <p class="text-text-light font-semibold mb-2">User ID 10547</p>
+                    <p class="text-text-muted text-sm italic">"Royal Caribbean has provided good services."</p>
+                </div>
+                <div class="card-glass p-6 rounded-lg shadow-sm border-l-4 border-positive-green hover:shadow-lg transition duration-200 animate-slide-in-right" style="animation-delay: 3.3s;">
+                    <p class="text-text-light font-semibold mb-2">User ID 9150</p>
+                    <p class="text-text-muted text-sm italic">"Our entire experience was great"</p>
+                </div>
+                <div class="card-glass p-6 rounded-lg shadow-sm border-l-4 border-positive-green hover:shadow-lg transition duration-200 animate-slide-in-right" style="animation-delay: 3.35s;">
+                    <p class="text-text-light font-semibold mb-2">User ID 10715</p>
+                    <p class="text-text-muted text-sm italic">"Lots to do great service"</p>
+                </div>
+                <div class="card-glass p-6 rounded-lg shadow-sm border-l-4 border-positive-green hover:shadow-lg transition duration-200 animate-slide-in-right" style="animation-delay: 3.4s;">
+                    <p class="text-text-light font-semibold mb-2">User ID 9217</p>
+                    <p class="text-text-muted text-sm italic">"very friendly and courteuos staff....... good selection of things to dol"</p>
+                </div>
+                <div class="card-glass p-6 rounded-lg shadow-sm border-l-4 border-positive-green hover:shadow-lg transition duration-200 animate-slide-in-right" style="animation-delay: 3.45s;">
+                    <p class="text-text-light font-semibold mb-2">User ID 11313</p>
+                    <p class="text-text-muted text-sm italic">"It was super fun and the ports were great. Staff was super helpful and friendly. Cruise"</p>
+                </div>
+                <div class="card-glass p-6 rounded-lg shadow-sm border-l-4 border-positive-green hover:shadow-lg transition duration-200 animate-slide-in-right" style="animation-delay: 3.5s;">
+                    <p class="text-text-light font-semibold mb-2">User ID 11183</p>
+                    <p class="text-text-muted text-sm italic">"I"</p>
+                </div>
+            </div>
+
+            <!-- Negative Comments -->
+            <h3 class="text-3xl font-display font-medium mb-6 text-negative-red animate-fade-in-up" style="animation-delay: 3.6s;">Negative Comments <span class="text-text-muted text-xl">(36)</span></h3>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <!-- Negative Comment Cards -->
+                <div class="card-glass p-6 rounded-lg shadow-sm border-l-4 border-negative-red hover:shadow-lg transition duration-200 animate-slide-in-right" style="animation-delay: 3.7s;">
+                    <p class="text-text-light font-semibold mb-2">User ID 7274</p>
+                    <p class="text-text-muted text-sm italic">"There is always room for improvement!"</p>
+                </div>
+                <div class="card-glass p-6 rounded-lg shadow-sm border-l-4 border-negative-red hover:shadow-lg transition duration-200 animate-slide-in-right" style="animation-delay: 3.75s;">
+                    <p class="text-text-light font-semibold mb-2">User ID 10416</p>
+                    <p class="text-text-muted text-sm italic">"The food was not as good as i expected. The room I had was very dirty though our attenda"</p>
+                </div>
+                <div class="card-glass p-6 rounded-lg shadow-sm border-l-4 border-negative-red hover:shadow-lg transition duration-200 animate-slide-in-right" style="animation-delay: 3.8s;">
+                    <p class="text-text-light font-semibold mb-2">User ID 12200</p>
+                    <p class="text-text-muted text-sm italic">"horrendous onboarding experience and just as terrible experience leaving the pier"</p>
+                </div>
+                <div class="card-glass p-6 rounded-lg shadow-sm border-l-4 border-negative-red hover:shadow-lg transition duration-200 animate-slide-in-right" style="animation-delay: 3.85s;">
+                    <p class="text-text-light font-semibold mb-2">User ID 10208</p>
+                    <p class="text-text-muted text-sm italic">"other boats are better than the one i was on."</p>
+                </div>
+                <div class="card-glass p-6 rounded-lg shadow-sm border-l-4 border-negative-red hover:shadow-lg transition duration-200 animate-slide-in-right" style="animation-delay: 3.9s;">
+                    <p class="text-text-light font-semibold mb-2">User ID 10170</p>
+                    <p class="text-text-muted text-sm italic">"We have been loyal cruisers with Royal but this cruise felt a little disappointing. I"</p>
+                </div>
+                <div class="card-glass p-6 rounded-lg shadow-sm border-l-4 border-negative-red hover:shadow-lg transition duration-200 animate-slide-in-right" style="animation-delay: 3.95s;">
+                    <p class="text-text-light font-semibold mb-2">User ID 6608</p>
+                    <p class="text-text-muted text-sm italic">"Royal Caribbean does not cater to single professionals. These cruises are more for famil"</p>
+                </div>
+                <div class="card-glass p-6 rounded-lg shadow-sm border-l-4 border-negative-red hover:shadow-lg transition duration-200 animate-slide-in-right" style="animation-delay: 4.0s;">
+                    <p class="text-text-light font-semibold mb-2">User ID 9209</p>
+                    <p class="text-text-muted text-sm italic">"Way too many people very busy and too noisy. The food in restaurants every day the same"</p>
+                </div>
+                <div class="card-glass p-6 rounded-lg shadow-sm border-l-4 border-negative-red hover:shadow-lg transition duration-200 animate-slide-in-right" style="animation-delay: 4.05s;">
+                    <p class="text-text-light font-semibold mb-2">User ID 10309</p>
+                    <p class="text-text-muted text-sm italic">"sehr viele leute, vorallem in den häfen beim anlegen. Die Musik war überall sehr laut."</p>
+                </div>
+                <div class="card-glass p-6 rounded-lg shadow-sm border-l-4 border-negative-red hover:shadow-lg transition duration-200 animate-slide-in-right" style="animation-delay: 4.1s;">
+                    <p class="text-text-light font-semibold mb-2">User ID 10233</p>
+                    <p class="text-text-muted text-sm italic">"Too long of line ups"</p>
+                </div>
+                <div class="card-glass p-6 rounded-lg shadow-sm border-l-4 border-negative-red hover:shadow-lg transition duration-200 animate-slide-in-right" style="animation-delay: 4.15s;">
+                    <p class="text-text-light font-semibold mb-2">User ID 9439</p>
+                    <p class="text-text-muted text-sm italic">"This was my first time on a cruise and I enjoyed every minute of it. It was sure an eye c"</p>
+                </div>
+                <div class="card-glass p-6 rounded-lg shadow-sm border-l-4 border-negative-red hover:shadow-lg transition duration-200 animate-slide-in-right" style="animation-delay: 4.2s;">
+                    <p class="text-text-light font-semibold mb-2">User ID 9142</p>
+                    <p class="text-text-muted text-sm italic">"I was very disappointed in the overall service on Symphony. FREEDOMS service has you bea"</p>
+                </div>
+                <div class="card-glass p-6 rounded-lg shadow-sm border-l-4 border-negative-red hover:shadow-lg transition duration-200 animate-slide-in-right" style="animation-delay: 4.25s;">
+                    <p class="text-text-light font-semibold mb-2">User ID 8604</p>
+                    <p class="text-text-muted text-sm italic">"Noted alot of kids running around the ship and dinning area. Not as pleasant as before."</p>
+                </div>
+                <div class="card-glass p-6 rounded-lg shadow-sm border-l-4 border-negative-red hover:shadow-lg transition duration-200 animate-slide-in-right" style="animation-delay: 4.3s;">
+                    <p class="text-text-light font-semibold mb-2">User ID 10305</p>
+                    <p class="text-text-muted text-sm italic">"We cruised with Royal before and have loved it in the past but had noticed some changes"</p>
+                </div>
+                <div class="card-glass p-6 rounded-lg shadow-sm border-l-4 border-negative-red hover:shadow-lg transition duration-200 animate-slide-in-right" style="animation-delay: 4.35s;">
+                    <p class="text-text-light font-semibold mb-2">User ID 9570</p>
+                    <p class="text-text-muted text-sm italic">"Expense, I mean the entertainment was great and the service impeccable, but there could"</p>
+                </div>
+                <div class="card-glass p-6 rounded-lg shadow-sm border-l-4 border-negative-red hover:shadow-lg transition duration-200 animate-slide-in-right" style="animation-delay: 4.4s;">
+                    <p class="text-text-light font-semibold mb-2">User ID 12616</p>
+                    <p class="text-text-muted text-sm italic">"Kids banging on the wall all night, Food was just ok at the buffet. There was entertain"</p>
+                </div>
+                <div class="card-glass p-6 rounded-lg shadow-sm border-l-4 border-negative-red hover:shadow-lg transition duration-200 animate-slide-in-right" style="animation-delay: 4.45s;">
+                    <p class="text-text-light font-semibold mb-2">User ID 9154</p>
+                    <p class="text-text-muted text-sm italic">"Just not impressed! Based on our experience cruising on Princess (elite status), NCL, Oc"</p>
+                </div>
+                <div class="card-glass p-6 rounded-lg shadow-sm border-l-4 border-negative-red hover:shadow-lg transition duration-200 animate-slide-in-right" style="animation-delay: 4.5s;">
+                    <p class="text-text-light font-semibold mb-2">User ID 7145</p>
+                    <p class="text-text-muted text-sm italic">"Casi no hay personal que hable español y eso dificulta la comunicación"</p>
+                </div>
+                <div class="card-glass p-6 rounded-lg shadow-sm border-l-4 border-negative-red hover:shadow-lg transition duration-200 animate-slide-in-right" style="animation-delay: 4.55s;">
+                    <p class="text-text-light font-semibold mb-2">User ID 3824</p>
+                    <p class="text-text-muted text-sm italic">"Bed was too hard"</p>
+                </div>
+                <div class="card-glass p-6 rounded-lg shadow-sm border-l-4 border-negative-red hover:shadow-lg transition duration-200 animate-slide-in-right" style="animation-delay: 4.6s;">
+                    <p class="text-text-light font-semibold mb-2">User ID 7677</p>
+                    <p class="text-text-muted text-sm italic">"I think the internet package is very expensive. we had the ultimate dining package as wel"</p>
+                </div>
+                <div class="card-glass p-6 rounded-lg shadow-sm border-l-4 border-negative-red hover:shadow-lg transition duration-200 animate-slide-in-right" style="animation-delay: 4.65s;">
+                    <p class="text-text-light font-semibold mb-2">User ID 6532</p>
+                    <p class="text-text-muted text-sm italic">"Food was horrible and not a lot of activities for 30 and under other than night club and"</p>
+                </div>
+                <div class="card-glass p-6 rounded-lg shadow-sm border-l-4 border-negative-red hover:shadow-lg transition duration-200 animate-slide-in-right" style="animation-delay: 4.7s;">
+                    <p class="text-text-light font-semibold mb-2">User ID 9564</p>
+                    <p class="text-text-muted text-sm italic">"Vi var meget skuffede over niveauet af de udskiftede øer. CocoCay var ligegyldig. Service"</p>
+                </div>
+                <div class="card-glass p-6 rounded-lg shadow-sm border-l-4 border-negative-red hover:shadow-lg transition duration-200 animate-slide-in-right" style="animation-delay: 4.75s;">
+                    <p class="text-text-light font-semibold mb-2">User ID 10232</p>
+                    <p class="text-text-muted text-sm italic">"Not sure where to start... We paid quite a bit of money for a Junior suite, this time arc"</p>
+                </div>
+                <div class="card-glass p-6 rounded-lg shadow-sm border-l-4 border-negative-red hover:shadow-lg transition duration-200 animate-slide-in-right" style="animation-delay: 4.8s;">
+                    <p class="text-text-light font-semibold mb-2">User ID 10725</p>
+                    <p class="text-text-muted text-sm italic">"My only issue was being chased out of the adult only pool area when I was walking throug"</p>
+                </div>
+                <div class="card-glass p-6 rounded-lg shadow-sm border-l-4 border-negative-red hover:shadow-lg transition duration-200 animate-slide-in-right" style="animation-delay: 4.85s;">
+                    <p class="text-text-light font-semibold mb-2">User ID 10278</p>
+                    <p class="text-text-muted text-sm italic">"My wife and I are diamond plus and overall Royal Caribbean is top notch however every -"</p>
+                </div>
+                <div class="card-glass p-6 rounded-lg shadow-sm border-l-4 border-negative-red hover:shadow-lg transition duration-200 animate-slide-in-right" style="animation-delay: 4.9s;">
+                    <p class="text-text-light font-semibold mb-2">User ID 12310</p>
+                    <p class="text-text-muted text-sm italic">"Not my type of ship. Dress codes not enforced and too much indecent exposure"</p>
+                </div>
+                <div class="card-glass p-6 rounded-lg shadow-sm border-l-4 border-negative-red hover:shadow-lg transition duration-200 animate-slide-in-right" style="animation-delay: 4.95s;">
+                    <p class="text-text-light font-semibold mb-2">User ID 9562</p>
+                    <p class="text-text-muted text-sm italic">"Det var slidt, kvaliteten var lav mad var ringe også efter at være bedt om at få mediu"</p>
+                </div>
+                <div class="card-glass p-6 rounded-lg shadow-sm border-l-4 border-negative-red hover:shadow-lg transition duration-200 animate-slide-in-right" style="animation-delay: 5.0s;">
+                    <p class="text-text-light font-semibold mb-2">User ID 9192</p>
+                    <p class="text-text-muted text-sm italic">"Food was a major let down especially in our main dining room."</p>
+                </div>
+                <div class="card-glass p-6 rounded-lg shadow-sm border-l-4 border-negative-red hover:shadow-lg transition duration-200 animate-slide-in-right" style="animation-delay: 5.05s;">
+                    <p class="text-text-light font-semibold mb-2">User ID 9590</p>
+                    <p class="text-text-muted text-sm italic">"Food was great but the ships population caused a need for more tables in the Windjammer"</p>
+                </div>
+                <div class="card-glass p-6 rounded-lg shadow-sm border-l-4 border-negative-red hover:shadow-lg transition duration-200 animate-slide-in-right" style="animation-delay: 5.1s;">
+                    <p class="text-text-light font-semibold mb-2">User ID 7274</p>
+                    <p class="text-text-muted text-sm italic">"There is always room for improvement!"</p>
+                </div>
+                <div class="card-glass p-6 rounded-lg shadow-sm border-l-4 border-negative-red hover:shadow-lg transition duration-200 animate-slide-in-right" style="animation-delay: 5.15s;">
+                    <p class="text-text-light font-semibold mb-2">User ID 10416</p>
+                    <p class="text-text-muted text-sm italic">"The food was not as good as i expected. The room I had was very dirty though our attenda"</p>
+                </div>
+                <div class="card-glass p-6 rounded-lg shadow-sm border-l-4 border-negative-red hover:shadow-lg transition duration-200 animate-slide-in-right" style="animation-delay: 5.2s;">
+                    <p class="text-text-light font-semibold mb-2">User ID 12200</p>
+                    <p class="text-text-muted text-sm italic">"horrendous onboarding experience and just as terrible experience leaving the pier"</p>
+                </div>
+                <div class="card-glass p-6 rounded-lg shadow-sm border-l-4 border-negative-red hover:shadow-lg transition duration-200 animate-slide-in-right" style="animation-delay: 5.25s;">
+                    <p class="text-text-light font-semibold mb-2">User ID 10208</p>
+                    <p class="text-text-muted text-sm italic">"other boats are better than the one i was on."</p>
+                </div>
+                <div class="card-glass p-6 rounded-lg shadow-sm border-l-4 border-negative-red hover:shadow-lg transition duration-200 animate-slide-in-right" style="animation-delay: 5.3s;">
+                    <p class="text-text-light font-semibold mb-2">User ID 10170</p>
+                    <p class="text-text-muted text-sm italic">"We have been loyal cruisers with Royal but this cruise felt a little disappointing. I"</p>
+                </div>
+                <div class="card-glass p-6 rounded-lg shadow-sm border-l-4 border-negative-red hover:shadow-lg transition duration-200 animate-slide-in-right" style="animation-delay: 5.35s;">
+                    <p class="text-text-light font-semibold mb-2">User ID 6608</p>
+                    <p class="text-text-muted text-sm italic">"Royal Caribbean does not cater to single professionals. These cruises are more for famil"</p>
+                </div>
+                <div class="card-glass p-6 rounded-lg shadow-sm border-l-4 border-negative-red hover:shadow-lg transition duration-200 animate-slide-in-right" style="animation-delay: 5.4s;">
+                    <p class="text-text-light font-semibold mb-2">User ID 9209</p>
+                    <p class="text-text-muted text-sm italic">"Way too many people very busy and too noisy. The food in restaurants every day the same"</p>
+                </div>
+                <div class="card-glass p-6 rounded-lg shadow-sm border-l-4 border-negative-red hover:shadow-lg transition duration-200 animate-slide-in-right" style="animation-delay: 5.45s;">
+                    <p class="text-text-light font-semibold mb-2">User ID 10309</p>
+                    <p class="text-text-muted text-sm italic">"sehr viele leute, vorallem in den häfen beim anlegen. Die Musik war überall sehr laut."</p>
+                </div>
+                <div class="card-glass p-6 rounded-lg shadow-sm border-l-4 border-negative-red hover:shadow-lg transition duration-200 animate-slide-in-right" style="animation-delay: 5.5s;">
+                    <p class="text-text-light font-semibold mb-2">User ID 10233</p>
+                    <p class="text-text-muted text-sm italic">"Too long of line ups"</p>
+                </div>
+                <div class="card-glass p-6 rounded-lg shadow-sm border-l-4 border-negative-red hover:shadow-lg transition duration-200 animate-slide-in-right" style="animation-delay: 5.55s;">
+                    <p class="text-text-light font-semibold mb-2">User ID 9439</p>
+                    <p class="text-text-muted text-sm italic">"This was my first time on a cruise and I enjoyed every minute of it. It was sure an eye c"</p>
+                </div>
+                <div class="card-glass p-6 rounded-lg shadow-sm border-l-4 border-negative-red hover:shadow-lg transition duration-200 animate-slide-in-right" style="animation-delay: 5.6s;">
+                    <p class="text-text-light font-semibold mb-2">User ID 9142</p>
+                    <p class="text-text-muted text-sm italic">"I was very disappointed in the overall service on Symphony. FREEDOMS service has you bea"</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Identified Upset Users -->
+        <section class="mb-20 animated-section">
+            <h2 class="text-4xl font-display font-semibold mb-10 text-center text-warning-orange animate-fade-in-up" style="animation-delay: 5.7s;">Identified Upset Users</h2>
+            <div class="flex flex-wrap justify-center gap-3 max-w-4xl mx-auto">
+                <!-- Upset User Tags -->
+                <span class="bg-warning-orange/20 text-warning-orange px-4 py-2 rounded-full font-medium text-sm flex items-center shadow-md animate-fade-in-up" style="animation-delay: 5.8s;">
+                    <svg class="w-4 h-4 mr-2" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clip-rule="evenodd"></path></svg>
+                    User ID 3824
+                </span>
+                <span class="bg-warning-orange/20 text-warning-orange px-4 py-2 rounded-full font-medium text-sm flex items-center shadow-md animate-fade-in-up" style="animation-delay: 5.85s;">
+                    <svg class="w-4 h-4 mr-2" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clip-rule="evenodd"></path></svg>
+                    User ID 6532
+                </span>
+                <span class="bg-warning-orange/20 text-warning-orange px-4 py-2 rounded-full font-medium text-sm flex items-center shadow-md animate-fade-in-up" style="animation-delay: 5.9s;">
+                    <svg class="w-4 h-4 mr-2" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clip-rule="evenodd"></path></svg>
+                    User ID 6608
+                </span>
+                <span class="bg-warning-orange/20 text-warning-orange px-4 py-2 rounded-full font-medium text-sm flex items-center shadow-md animate-fade-in-up" style="animation-delay: 5.95s;">
+                    <svg class="w-4 h-4 mr-2" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clip-rule="evenodd"></path></svg>
+                    User ID 7145
+                </span>
+                <span class="bg-warning-orange/20 text-warning-orange px-4 py-2 rounded-full font-medium text-sm flex items-center shadow-md animate-fade-in-up" style="animation-delay: 6.0s;">
+                    <svg class="w-4 h-4 mr-2" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clip-rule="evenodd"></path></svg>
+                    User ID 7274
+                </span>
+                <span class="bg-warning-orange/20 text-warning-orange px-4 py-2 rounded-full font-medium text-sm flex items-center shadow-md animate-fade-in-up" style="animation-delay: 6.05s;">
+                    <svg class="w-4 h-4 mr-2" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clip-rule="evenodd"></path></svg>
+                    User ID 7677
+                </span>
+                <span class="bg-warning-orange/20 text-warning-orange px-4 py-2 rounded-full font-medium text-sm flex items-center shadow-md animate-fade-in-up" style="animation-delay: 6.1s;">
+                    <svg class="w-4 h-4 mr-2" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clip-rule="evenodd"></path></svg>
+                    User ID 8604
+                </span>
+                <span class="bg-warning-orange/20 text-warning-orange px-4 py-2 rounded-full font-medium text-sm flex items-center shadow-md animate-fade-in-up" style="animation-delay: 6.15s;">
+                    <svg class="w-4 h-4 mr-2" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clip-rule="evenodd"></path></svg>
+                    User ID 9142
+                </span>
+                <span class="bg-warning-orange/20 text-warning-orange px-4 py-2 rounded-full font-medium text-sm flex items-center shadow-md animate-fade-in-up" style="animation-delay: 6.2s;">
+                    <svg class="w-4 h-4 mr-2" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clip-rule="evenodd"></path></svg>
+                    User ID 9154
+                </span>
+                <span class="bg-warning-orange/20 text-warning-orange px-4 py-2 rounded-full font-medium text-sm flex items-center shadow-md animate-fade-in-up" style="animation-delay: 6.25s;">
+                    <svg class="w-4 h-4 mr-2" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clip-rule="evenodd"></path></svg>
+                    User ID 9192
+                </span>
+                <span class="bg-warning-orange/20 text-warning-orange px-4 py-2 rounded-full font-medium text-sm flex items-center shadow-md animate-fade-in-up" style="animation-delay: 6.3s;">
+                    <svg class="w-4 h-4 mr-2" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clip-rule="evenodd"></path></svg>
+                    User ID 9209
+                </span>
+                <span class="bg-warning-orange/20 text-warning-orange px-4 py-2 rounded-full font-medium text-sm flex items-center shadow-md animate-fade-in-up" style="animation-delay: 6.35s;">
+                    <svg class="w-4 h-4 mr-2" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clip-rule="evenodd"></path></svg>
+                    User ID 9439
+                </span>
+                <span class="bg-warning-orange/20 text-warning-orange px-4 py-2 rounded-full font-medium text-sm flex items-center shadow-md animate-fade-in-up" style="animation-delay: 6.4s;">
+                    <svg class="w-4 h-4 mr-2" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clip-rule="evenodd"></path></svg>
+                    User ID 9562
+                </span>
+                <span class="bg-warning-orange/20 text-warning-orange px-4 py-2 rounded-full font-medium text-sm flex items-center shadow-md animate-fade-in-up" style="animation-delay: 6.45s;">
+                    <svg class="w-4 h-4 mr-2" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clip-rule="evenodd"></path></svg>
+                    User ID 9564
+                </span>
+                <span class="bg-warning-orange/20 text-warning-orange px-4 py-2 rounded-full font-medium text-sm flex items-center shadow-md animate-fade-in-up" style="animation-delay: 6.5s;">
+                    <svg class="w-4 h-4 mr-2" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clip-rule="evenodd"></path></svg>
+                    User ID 9570
+                </span>
+                <span class="bg-warning-orange/20 text-warning-orange px-4 py-2 rounded-full font-medium text-sm flex items-center shadow-md animate-fade-in-up" style="animation-delay: 6.55s;">
+                    <svg class="w-4 h-4 mr-2" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clip-rule="evenodd"></path></svg>
+                    User ID 9590
+                </span>
+                <span class="bg-warning-orange/20 text-warning-orange px-4 py-2 rounded-full font-medium text-sm flex items-center shadow-md animate-fade-in-up" style="animation-delay: 6.6s;">
+                    <svg class="w-4 h-4 mr-2" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clip-rule="evenodd"></path></svg>
+                    User ID 10170
+                </span>
+                <span class="bg-warning-orange/20 text-warning-orange px-4 py-2 rounded-full font-medium text-sm flex items-center shadow-md animate-fade-in-up" style="animation-delay: 6.65s;">
+                    <svg class="w-4 h-4 mr-2" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clip-rule="evenodd"></path></svg>
+                    User ID 10208
+                </span>
+                <span class="bg-warning-orange/20 text-warning-orange px-4 py-2 rounded-full font-medium text-sm flex items-center shadow-md animate-fade-in-up" style="animation-delay: 6.7s;">
+                    <svg class="w-4 h-4 mr-2" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clip-rule="evenodd"></path></svg>
+                    User ID 10232
+                </span>
+                <span class="bg-warning-orange/20 text-warning-orange px-4 py-2 rounded-full font-medium text-sm flex items-center shadow-md animate-fade-in-up" style="animation-delay: 6.75s;">
+                    <svg class="w-4 h-4 mr-2" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clip-rule="evenodd"></path></svg>
+                    User ID 10233
+                </span>
+                <span class="bg-warning-orange/20 text-warning-orange px-4 py-2 rounded-full font-medium text-sm flex items-center shadow-md animate-fade-in-up" style="animation-delay: 6.8s;">
+                    <svg class="w-4 h-4 mr-2" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clip-rule="evenodd"></path></svg>
+                    User ID 10278
+                </span>
+                <span class="bg-warning-orange/20 text-warning-orange px-4 py-2 rounded-full font-medium text-sm flex items-center shadow-md animate-fade-in-up" style="animation-delay: 6.85s;">
+                    <svg class="w-4 h-4 mr-2" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clip-rule="evenodd"></path></svg>
+                    User ID 10305
+                </span>
+                <span class="bg-warning-orange/20 text-warning-orange px-4 py-2 rounded-full font-medium text-sm flex items-center shadow-md animate-fade-in-up" style="animation-delay: 6.9s;">
+                    <svg class="w-4 h-4 mr-2" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clip-rule="evenodd"></path></svg>
+                    User ID 10309
+                </span>
+                <span class="bg-warning-orange/20 text-warning-orange px-4 py-2 rounded-full font-medium text-sm flex items-center shadow-md animate-fade-in-up" style="animation-delay: 6.95s;">
+                    <svg class="w-4 h-4 mr-2" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clip-rule="evenodd"></path></svg>
+                    User ID 10416
+                </span>
+                <span class="bg-warning-orange/20 text-warning-orange px-4 py-2 rounded-full font-medium text-sm flex items-center shadow-md animate-fade-in-up" style="animation-delay: 7.0s;">
+                    <svg class="w-4 h-4 mr-2" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clip-rule="evenodd"></path></svg>
+                    User ID 10725
+                </span>
+                <span class="bg-warning-orange/20 text-warning-orange px-4 py-2 rounded-full font-medium text-sm flex items-center shadow-md animate-fade-in-up" style="animation-delay: 7.05s;">
+                    <svg class="w-4 h-4 mr-2" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clip-rule="evenodd"></path></svg>
+                    User ID 12200
+                </span>
+                <span class="bg-warning-orange/20 text-warning-orange px-4 py-2 rounded-full font-medium text-sm flex items-center shadow-md animate-fade-in-up" style="animation-delay: 7.1s;">
+                    <svg class="w-4 h-4 mr-2" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clip-rule="evenodd"></path></svg>
+                    User ID 12616
+                </span>
+                <span class="bg-warning-orange/20 text-warning-orange px-4 py-2 rounded-full font-medium text-sm flex items-center shadow-md animate-fade-in-up" style="animation-delay: 7.15s;">
+                    <svg class="w-4 h-4 mr-2" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clip-rule="evenodd"></path></svg>
+                    User ID 12310
+                </span>
+            </div>
+        </section>
+
+        <!-- Personalized Feedback Messages -->
+        <section class="mb-20 animated-section">
+            <h2 class="text-4xl font-display font-semibold mb-10 text-center text-blue-400 animate-fade-in-up" style="animation-delay: 7.2s;">Personalized Feedback Messages</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-6xl mx-auto">
+                <!-- Feedback Message Cards -->
+                <div class="card-glass gradient-feedback p-8 rounded-xl shadow-glass-md hover:shadow-xl transition duration-300 animate-fade-in-up" style="animation-delay: 7.3s;">
+                    <h4 class="text-2xl font-display font-semibold mb-4 text-white">User ID 7274</h4>
+                    <p class="text-text-light leading-relaxed">"We appreciate your valuable perspective that there's always room for improvement. Could you share specific areas where you feel we could enhance your experience?"</p>
+                </div>
+                <div class="card-glass gradient-feedback p-8 rounded-xl shadow-glass-md hover:shadow-xl transition duration-300 animate-fade-in-up" style="animation-delay: 7.35s;">
+                    <h4 class="text-2xl font-display font-semibold mb-4 text-white">User ID 10416</h4>
+                    <p class="text-text-light leading-relaxed">"We're truly sorry to hear that your food experience didn't meet your expectations and that your room was dirty. This is certainly not the standard we aim for. Could you tell us more about the issues you encountered with the food and your room so we can address them?"</p>
+                </div>
+                <div class="card-glass gradient-feedback p-8 rounded-xl shadow-glass-md hover:shadow-xl transition duration-300 animate-fade-in-up" style="animation-delay: 7.4s;">
+                    <h4 class="text-2xl font-display font-semibold mb-4 text-white">User ID 12200</h4>
+                    <p class="text-text-light leading-relaxed">"We are very concerned to hear about your horrendous onboarding and pier departure experiences. We sincerely apologize for this. Please, would you be willing to share more details about what made these experiences so terrible so we can investigate and improve?"</p>
+                </div>
+                <div class="card-glass gradient-feedback p-8 rounded-xl shadow-glass-md hover:shadow-xl transition duration-300 animate-fade-in-up" style="animation-delay: 7.45s;">
+                    <h4 class="text-2xl font-display font-semibold mb-4 text-white">User ID 10208</h4>
+                    <p class="text-text-light leading-relaxed">"We're sorry to hear that your recent cruise didn't live up to your expectations compared to other experiences. To help us understand and improve, could you tell us more about what specifically you found better on other boats?"</p>
+                </div>
+                <div class="card-glass gradient-feedback p-8 rounded-xl shadow-glass-md hover:shadow-xl transition duration-300 animate-fade-in-up" style="animation-delay: 7.5s;">
+                    <h4 class="text-2xl font-display font-semibold mb-4 text-white">User ID 10170</h4>
+                    <p class="text-text-light leading-relaxed">"We're truly sorry to hear that this cruise was a disappointment for you, especially as a loyal Royal Caribbean cruiser. Your long-standing loyalty means a lot to us. Could you please share what specifically felt disappointing so we can understand what went wrong?"</p>
+                </div>
+                <div class="card-glass gradient-feedback p-8 rounded-xl shadow-glass-md hover:shadow-xl transition duration-300 animate-fade-in-up" style="animation-delay: 7.55s;">
+                    <h4 class="text-2xl font-display font-semibold mb-4 text-white">User ID 6608</h4>
+                    <p class="text-text-light leading-relaxed">"Thank you for your candid feedback. We're sorry to hear you felt that Royal Caribbean doesn't cater to single professionals. We're always looking to diversify our offerings, and your insights are valuable. Could you elaborate on what kind of activities or amenities would enhance the experience for single professionals?"</p>
+                </div>
+                <div class="card-glass gradient-feedback p-8 rounded-xl shadow-glass-md hover:shadow-xl transition duration-300 animate-fade-in-up" style="animation-delay: 7.6s;">
+                    <h4 class="text-2xl font-display font-semibold mb-4 text-white">User ID 9209</h4>
+                    <p class="text-text-light leading-relaxed">"We regret to hear that you found the ship too crowded, noisy, and that the food variety in the restaurants was repetitive. We strive to provide a comfortable experience for everyone. Could you tell us which areas felt most crowded or noisy, and what kind of food variety you would have preferred?"</p>
+                </div>
+                <div class="card-glass gradient-feedback p-8 rounded-xl shadow-glass-md hover:shadow-xl transition duration-300 animate-fade-in-up" style="animation-delay: 7.65s;">
+                    <h4 class="text-2xl font-display font-semibold mb-4 text-white">User ID 10309</h4>
+                    <p class="text-text-light leading-relaxed">"We're sorry to hear that you found the ship too crowded, especially in ports, and the music too loud. We aim for a relaxing atmosphere for all our guests. Could you specify which areas or times the music was particularly disruptive?"</p>
+                </div>
+                <div class="card-glass gradient-feedback p-8 rounded-xl shadow-glass-md hover:shadow-xl transition duration-300 animate-fade-in-up" style="animation-delay: 7.7s;">
+                    <h4 class="text-2xl font-display font-semibold mb-4 text-white">User ID 10233</h4>
+                    <p class="text-text-light leading-relaxed">"We apologize for the inconvenience caused by long line-ups during your cruise. We are constantly working to improve efficiency. Could you share where you experienced the longest wait times so we can focus our efforts on those areas?"</p>
+                </div>
+                <div class="card-glass gradient-feedback p-8 rounded-xl shadow-glass-md hover:shadow-xl transition duration-300 animate-fade-in-up" style="animation-delay: 7.75s;">
+                    <h4 class="text-2xl font-display font-semibold mb-4 text-white">User ID 9439</h4>
+                    <p class="text-text-light leading-relaxed">"We're sorry that elements of your recent cruise didn't meet the high quality you've come to expect from Royal Caribbean. Your detailed feedback helps us immensely. Could you please elaborate on what specifically fell short over your past three cruises?"</p>
+                </div>
+                <div class="card-glass gradient-feedback p-8 rounded-xl shadow-glass-md hover:shadow-xl transition duration-300 animate-fade-in-up" style="animation-delay: 7.8s;">
+                    <h4 class="text-2xl font-display font-semibold mb-4 text-white">User ID 9142</h4>
+                    <p class="text-text-light leading-relaxed">"We are very sorry to hear about your disappointment with the overall service on Symphony, especially when comparing it to FREEDOM's service. Your feedback is important to us. Could you please provide specific examples of where the service on Symphony fell short of your expectations?"</p>
+                </div>
+                <div class="card-glass gradient-feedback p-8 rounded-xl shadow-glass-md hover:shadow-xl transition duration-300 animate-fade-in-up" style="animation-delay: 7.85s;">
+                    <h4 class="text-2xl font-display font-semibold mb-4 text-white">User ID 8604</h4>
+                    <p class="text-text-light leading-relaxed">"We're sorry to hear that the presence of children running around affected your experience, making it less pleasant than before. We aim to create an enjoyable environment for all guests. Could you suggest ways we might better manage public areas to improve comfort for everyone?"</p>
+                </div>
+                <div class="card-glass gradient-feedback p-8 rounded-xl shadow-glass-md hover:shadow-xl transition duration-300 animate-fade-in-up" style="animation-delay: 7.9s;">
+                    <h4 class="text-2xl font-display font-semibold mb-4 text-white">User ID 10305</h4>
+                    <p class="text-text-light leading-relaxed">"We're concerned to hear that you've noticed some changes that impacted your recent experience, especially as a returning guest. We appreciate your past loyalty. Could you tell us more about the changes you observed and how they affected your cruise?"</p>
+                </div>
+                <div class="card-glass gradient-feedback p-8 rounded-xl shadow-glass-md hover:shadow-xl transition duration-300 animate-fade-in-up" style="animation-delay: 7.95s;">
+                    <h4 class="text-2xl font-display font-semibold mb-4 text-white">User ID 9570</h4>
+                    <p class="text-text-light leading-relaxed">"Thank you for your feedback regarding the expense of your cruise. While we're glad to hear you enjoyed the entertainment and service, we understand cost is an important factor. Could you elaborate on what aspects you felt were overpriced or where you believe there could be more value?"</p>
+                </div>
+                <div class="card-glass gradient-feedback p-8 rounded-xl shadow-glass-md hover:shadow-xl transition duration-300 animate-fade-in-up" style="animation-delay: 8.0s;">
+                    <h4 class="text-2xl font-display font-semibold mb-4 text-white">User ID 12616</h4>
+                    <p class="text-text-light leading-relaxed">"We're very sorry to hear about the disturbance from kids banging on the wall and that the buffet food was only 'just ok'. We strive for a restful and enjoyable environment. Could you provide details on when and where the noise occurred, and what specific improvements you'd suggest for the buffet?"</p>
+                </div>
+                <div class="card-glass gradient-feedback p-8 rounded-xl shadow-glass-md hover:shadow-xl transition duration-300 animate-fade-in-up" style="animation-delay: 8.05s;">
+                    <h4 class="text-2xl font-display font-semibold mb-4 text-white">User ID 9154</h4>
+                    <p class="text-text-light leading-relaxed">"We're truly sorry to hear that you were not impressed with your recent Royal Caribbean experience, especially given your positive past cruises with other lines. We value your insights. Could you share specific areas where we fell short compared to your experiences on Princess, NCL, or Oceania?"</p>
+                </div>
+                <div class="card-glass gradient-feedback p-8 rounded-xl shadow-glass-md hover:shadow-xl transition duration-300 animate-fade-in-up" style="animation-delay: 8.1s;">
+                    <h4 class="text-2xl font-display font-semibold mb-4 text-white">User ID 7145</h4>
+                    <p class="text-text-light leading-relaxed">"We apologize for the communication difficulties you experienced due to a lack of Spanish-speaking staff. We understand how important clear communication is for an enjoyable trip. Could you tell us more about specific instances where this was a challenge so we can improve our language support?"</p>
+                </div>
+                <div class="card-glass gradient-feedback p-8 rounded-xl shadow-glass-md hover:shadow-xl transition duration-300 animate-fade-in-up" style="animation-delay: 8.15s;">
+                    <h4 class="text-2xl font-display font-semibold mb-4 text-white">User ID 3824</h4>
+                    <p class="text-text-light leading-relaxed">"We're sorry to hear that your bed was too hard, impacting your comfort during your stay. We value your rest and relaxation. Could you let us know if you reported this issue during your cruise, or if there's anything else about your room comfort you'd like to share?"</p>
+                </div>
+                <div class="card-glass gradient-feedback p-8 rounded-xl shadow-glass-md hover:shadow-xl transition duration-300 animate-fade-in-up" style="animation-delay: 8.2s;">
+                    <h4 class="text-2xl font-display font-semibold mb-4 text-white">User ID 7677</h4>
+                    <p class="text-text-light leading-relaxed">"Thank you for your feedback regarding the cost of the internet package. We understand that pricing can be a concern. Could you suggest what you would consider a fair price for the internet package, or any alternative service structures you would prefer?"</p>
+                </div>
+                <div class="card-glass gradient-feedback p-8 rounded-xl shadow-glass-md hover:shadow-xl transition duration-300 animate-fade-in-up" style="animation-delay: 8.25s;">
+                    <h4 class="text-2xl font-display font-semibold mb-4 text-white">User ID 6532</h4>
+                    <p class="text-text-light leading-relaxed">"We're truly sorry to hear that you found the food horrible and that there weren't enough activities for guests under 30. This is valuable feedback. Could you elaborate on what kind of food you would have preferred and what additional activities you would suggest for younger adults?"</p>
+                </div>
+                <div class="card-glass gradient-feedback p-8 rounded-xl shadow-glass-md hover:shadow-xl transition duration-300 animate-fade-in-up" style="animation-delay: 8.3s;">
+                    <h4 class="text-2xl font-display font-semibold mb-4 text-white">User ID 9564</h4>
+                    <p class="text-text-light leading-relaxed">"We're very sorry to hear that you were disappointed with the substituted islands and found CocoCay unimpressive. Your feedback on our destinations is crucial. Could you tell us more about what specifically you disliked about CocoCay and the other islands, and what you would have preferred?"</p>
+                </div>
+                <div class="card-glass gradient-feedback p-8 rounded-xl shadow-glass-md hover:shadow-xl transition duration-300 animate-fade-in-up" style="animation-delay: 8.35s;">
+                    <h4 class="text-2xl font-display font-semibold mb-4 text-white">User ID 10232</h4>
+                    <p class="text-text-light leading-relaxed">"We understand your frustration and are concerned to hear that your experience, especially after investing in a Junior suite, was not satisfactory. We sincerely apologize. To help us understand and address your concerns, could you please share more details about what made this experience fall short of your expectations?"</p>
+                </div>
+                <div class="card-glass gradient-feedback p-8 rounded-xl shadow-glass-md hover:shadow-xl transition duration-300 animate-fade-in-up" style="animation-delay: 8.4s;">
+                    <h4 class="text-2xl font-display font-semibold mb-4 text-white">User ID 10725</h4>
+                    <p class="text-text-light leading-relaxed">"We're sorry to hear about your experience in the adult-only pool area. We aim for clear and respectful communication regarding ship rules. Could you provide more details about this incident, including the time and location, so we can review our procedures and staff interactions?"</p>
+                </div>
+                <div class="card-glass gradient-feedback p-8 rounded-xl shadow-glass-md hover:shadow-xl transition duration-300 animate-fade-in-up" style="animation-delay: 8.45s;">
+                    <h4 class="text-2xl font-display font-semibold mb-4 text-white">User ID 10278</h4>
+                    <p class="text-text-light leading-relaxed">"We appreciate your loyalty as Diamond Plus members and are glad you generally find Royal Caribbean top-notch. However, we're concerned about the 'every -' you mentioned. Could you please complete your thought and share the specific recurring issues or concerns you've encountered so we can address them?"</p>
+                </div>
+                <div class="card-glass gradient-feedback p-8 rounded-xl shadow-glass-md hover:shadow-xl transition duration-300 animate-fade-in-up" style="animation-delay: 8.5s;">
+                    <h4 class="text-2xl font-display font-semibold mb-4 text-white">User ID 12310</h4>
+                    <p class="text-text-light leading-relaxed">"We're sorry to hear that this ship wasn't to your preference, and we take your feedback regarding dress codes and indecent exposure very seriously. We strive to maintain a comfortable environment for all guests. Could you provide more details on when and where you observed these issues so we can address them appropriately?"</p>
+                </div>
+                <div class="card-glass gradient-feedback p-8 rounded-xl shadow-glass-md hover:shadow-xl transition duration-300 animate-fade-in-up" style="animation-delay: 8.55s;">
+                    <h4 class="text-2xl font-display font-semibold mb-4 text-white">User ID 9562</h4>
+                    <p class="text-text-light leading-relaxed">"We sincerely apologize that you found the ship worn out, the quality low, and the food poor, especially after specifying your preference. This is definitely not the experience we want for our guests. Could you tell us more about the specific areas you found worn out and which dishes at the restaurant were disappointing?"</p>
+                </div>
+                <div class="card-glass gradient-feedback p-8 rounded-xl shadow-glass-md hover:shadow-xl transition duration-300 animate-fade-in-up" style="animation-delay: 8.6s;">
+                    <h4 class="text-2xl font-display font-semibold mb-4 text-white">User ID 9192</h4>
+                    <p class="text-text-light leading-relaxed">"We're very sorry to hear that the food was a major letdown, particularly in your main dining room. We aim to provide exceptional dining experiences. Could you share details about what aspects of the food were disappointing and if there were any specific meals or dishes that you found unsatisfactory?"</p>
+                </div>
+                <div class="card-glass gradient-feedback p-8 rounded-xl shadow-glass-md hover:shadow-xl transition duration-300 animate-fade-in-up" style="animation-delay: 8.65s;">
+                    <h4 class="text-2xl font-display font-semibold mb-4 text-white">User ID 9590</h4>
+                    <p class="text-text-light leading-relaxed">"We're glad you enjoyed the food, but we apologize for the overcrowding in the Windjammer, which clearly impacted your experience. We understand the need for adequate seating. Could you suggest specific times or situations where more tables were most urgently needed, or other ways we could manage the flow?"</p>
+                </div>
+            </div>
+        </section>
+
+    </div>
+</body>
+</html>
