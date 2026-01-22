@@ -101,12 +101,19 @@
             });
         });
     </script>
+
+    <style>
+      /* --- Scroll safety + background layers shouldn't intercept input --- */
+      html, body { height: auto; overflow-x: hidden; overflow-y: auto; }
+      body { position: relative; }
+      .bg-layer { pointer-events: none; }
+    </style>
 </head>
 <body class="bg-bg-dark min-h-screen p-4 md:p-8 relative overflow-x-hidden">
     <!-- Background Gradients and Effects -->
-    <div class="absolute inset-0 bg-gradient-to-br from-bg-dark-light via-bg-dark to-bg-dark-light animate-gradient-shift opacity-70"></div>
-    <div class="absolute top-1/4 left-1/4 w-72 h-72 bg-accent-teal rounded-full mix-blend-screen filter blur-3xl opacity-30 animate-pulse-sm"></div>
-    <div class="absolute bottom-1/4 right-1/4 w-72 h-72 bg-accent-purple rounded-full mix-blend-screen filter blur-3xl opacity-30 animate-pulse-sm animation-delay-2000"></div>
+    <div class="bg-layer absolute inset-0 bg-gradient-to-br from-bg-dark-light via-bg-dark to-bg-dark-light animate-gradient-shift opacity-70"></div>
+    <div class="bg-layer absolute top-1/4 left-1/4 w-72 h-72 bg-accent-teal rounded-full mix-blend-screen filter blur-3xl opacity-30 animate-pulse-sm"></div>
+    <div class="bg-layer absolute bottom-1/4 right-1/4 w-72 h-72 bg-accent-purple rounded-full mix-blend-screen filter blur-3xl opacity-30 animate-pulse-sm animation-delay-2000"></div>
 
     <div class="relative z-10 max-w-7xl mx-auto space-y-12">
         <!-- Header Section -->
@@ -143,8 +150,8 @@
 
                 <!-- Cleanliness -->
                 <div class="col-span-1 md:col-span-1 lg:col-span-1">
-                    <div class="category-card bg-card-glass backdrop-blur-lg border border-border-light rounded-2xl p-6 shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-102">
-                        <button class="accordion-toggle w-full text-left flex justify-between items-center pb-4 cursor-pointer">
+                    <div class="category-card h-full bg-card-glass backdrop-blur-lg border border-border-light rounded-2xl p-6 shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-102">
+                        <button class="accordion-toggle w-full text-left flex justify-between items-center pb-4 cursor-pointer min-h-[72px]">
                             <h3 class="text-2xl font-semibold text-text-white">Cleanliness <span class="text-accent-teal">(5 issues)</span></h3>
                             <span class="accordion-icon text-accent-teal">
                                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-5 h-5">
@@ -175,7 +182,7 @@
                             </div>
                             <div class="feedback-item bg-bg-dark-light/50 p-4 rounded-lg border border-border-light/50 shadow-inner">
                                 <p class="text-text-white font-medium mb-1">User ID: 10576</p>
-                                <p class="text-text-light italic text-sm mb-2">"We had a few issues with our stateroom when we arrived. There was fecal matter in the I do was to emphasize gerardo the head stateroom attendant was amazing & very nice when we bro However, when we brought up the number of issues to guest services to see if we can get some s we had a separate instance where security was called to our room due to a “fight disturbance”"</p>
+                                <p class="text-text-light italic text-sm mb-2">"We had a few issues with our stateroom when we arrived. There was fecal matter in the I do was to emphasize gerardo the head stateroom attendant was amazing & very nice when we bro However, when we brought up the number of issues to guest services to see if we can get some s we had a separate instance where security was called to our room due to a fight disturbance"</p>
                                 <p class="text-text-light text-sm">Summary: Serious issues included a dirty stateroom and being falsely accused by security of a disturbance.</p>
                             </div>
                         </div>
@@ -183,9 +190,9 @@
                 </div>
 
                 <!-- Guest Services -->
-                <div class="col-span-1 md:col-span-2 lg:col-span-2">
-                    <div class="category-card bg-card-glass backdrop-blur-lg border border-border-light rounded-2xl p-6 shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-102">
-                        <button class="accordion-toggle w-full text-left flex justify-between items-center pb-4 cursor-pointer">
+                <div class="col-span-1">
+                    <div class="category-card h-full bg-card-glass backdrop-blur-lg border border-border-light rounded-2xl p-6 shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-102">
+                        <button class="accordion-toggle w-full text-left flex justify-between items-center pb-4 cursor-pointer min-h-[72px]">
                             <h3 class="text-2xl font-semibold text-text-white">Guest Services <span class="text-accent-teal">(14 issues)</span></h3>
                             <span class="accordion-icon text-accent-teal">
                                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-5 h-5">
@@ -226,7 +233,7 @@
                             </div>
                             <div class="feedback-item bg-bg-dark-light/50 p-4 rounded-lg border border-border-light/50 shadow-inner">
                                 <p class="text-text-white font-medium mb-1">User ID: 14227</p>
-                                <p class="text-text-light italic text-sm mb-2">"We’ve loved our prior cruises with Caribbean, but this one didn’t quite hit the mark. down and see if any of the unlabelled suitcases were ours. Eventually, I found my labelled sui The areas that were meant to be reserved for Ley and suite guests weren’t really marked or enf Overall, when issues were raised, they were addressed. However, I don’t really want to be deal"</p>
+                                <p class="text-text-light italic text-sm mb-2">"Weve loved our prior cruises with Caribbean, but this one didnt quite hit the mark. down and see if any of the unlabelled suitcases were ours. Eventually, I found my labelled sui The areas that were meant to be reserved for Ley and suite guests werent really marked or enf Overall, when issues were raised, they were addressed. However, I dont really want to be deal"</p>
                                 <p class="text-text-light text-sm">Summary: Issues included luggage problems and unenforced rules for areas reserved for suite guests.</p>
                             </div>
                             <div class="feedback-item bg-bg-dark-light/50 p-4 rounded-lg border border-border-light/50 shadow-inner">
@@ -236,7 +243,7 @@
                             </div>
                             <div class="feedback-item bg-bg-dark-light/50 p-4 rounded-lg border border-border-light/50 shadow-inner">
                                 <p class="text-text-white font-medium mb-1">User ID: 10728</p>
-                                <p class="text-text-light italic text-sm mb-2">"getting there… getting to the port and parking are terrible… after that everything was"</p>
+                                <p class="text-text-light italic text-sm mb-2">"getting there getting to the port and parking are terrible after that everything was"</p>
                                 <p class="text-text-light text-sm">Summary: The process of getting to the port and parking was described as terrible by the guest.</p>
                             </div>
                             <div class="feedback-item bg-bg-dark-light/50 p-4 rounded-lg border border-border-light/50 shadow-inner">
@@ -261,7 +268,7 @@
                             </div>
                             <div class="feedback-item bg-bg-dark-light/50 p-4 rounded-lg border border-border-light/50 shadow-inner">
                                 <p class="text-text-white font-medium mb-1">User ID: 10728</p>
-                                <p class="text-text-light italic text-sm mb-2">"getting there… getting to the port and parking are terrible… after that everything was"</p>
+                                <p class="text-text-light italic text-sm mb-2">"getting there getting to the port and parking are terrible after that everything was"</p>
                                 <p class="text-text-light text-sm">Summary: The process of getting to the port and parking was described as terrible by the guest.</p>
                             </div>
                         </div>
@@ -269,9 +276,9 @@
                 </div>
 
                 <!-- Food & Beverage -->
-                <div class="col-span-1 md:col-span-1 lg:col-span-3">
-                    <div class="category-card bg-card-glass backdrop-blur-lg border border-border-light rounded-2xl p-6 shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-102">
-                        <button class="accordion-toggle w-full text-left flex justify-between items-center pb-4 cursor-pointer">
+                <div class="col-span-1">
+                    <div class="category-card h-full bg-card-glass backdrop-blur-lg border border-border-light rounded-2xl p-6 shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-102">
+                        <button class="accordion-toggle w-full text-left flex justify-between items-center pb-4 cursor-pointer min-h-[72px]">
                             <h3 class="text-2xl font-semibold text-text-white">Food & Beverage <span class="text-accent-teal">(32 issues)</span></h3>
                             <span class="accordion-icon text-accent-teal">
                                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-5 h-5">
@@ -287,7 +294,7 @@
                             </div>
                             <div class="feedback-item bg-bg-dark-light/50 p-4 rounded-lg border border-border-light/50 shadow-inner">
                                 <p class="text-text-white font-medium mb-1">User ID: 9562</p>
-                                <p class="text-text-light italic text-sm mb-2">"Det var slidt, kvaliteten var lav - mad var ringe også efter at være bedt om at få medi"</p>
+                                <p class="text-text-light italic text-sm mb-2">"Det var slidt, kvaliteten var lav - mad var ringe ogs efter at vre bedt om at f medi"</p>
                                 <p class="text-text-light text-sm">Summary: The ship appeared worn down and the overall food quality was poor.</p>
                             </div>
                             <div class="feedback-item bg-bg-dark-light/50 p-4 rounded-lg border border-border-light/50 shadow-inner">
@@ -342,12 +349,12 @@
                             </div>
                             <div class="feedback-item bg-bg-dark-light/50 p-4 rounded-lg border border-border-light/50 shadow-inner">
                                 <p class="text-text-white font-medium mb-1">User ID: 14538</p>
-                                <p class="text-text-light italic text-sm mb-2">"Pros - staff were all amazing, we love your ships, specialty dining awesome, amenities Cons - main dining room food was horrible ( as usual ) - our waiter was great! We’ve cruised R Lastly, smoking areas should be expanded. They’re very crowded and not enough of them."</p>
+                                <p class="text-text-light italic text-sm mb-2">"Pros - staff were all amazing, we love your ships, specialty dining awesome, amenities Cons - main dining room food was horrible ( as usual ) - our waiter was great! Weve cruised R Lastly, smoking areas should be expanded. Theyre very crowded and not enough of them."</p>
                                 <p class="text-text-light text-sm">Summary: The main dining room food was horrible and more smoking areas are needed on board.</p>
                             </div>
                             <div class="feedback-item bg-bg-dark-light/50 p-4 rounded-lg border border-border-light/50 shadow-inner">
                                 <p class="text-text-white font-medium mb-1">User ID: 8732</p>
-                                <p class="text-text-light italic text-sm mb-2">"Subject: Urgent Complaint – Repeated Allergy Negligence on Symphony of the Seas (Jan 11 Dear Royal Caribbean Guest Relations, I am writing to formally report a serious issue we experienced during our recent sailing on Sy You would expect that after such a serious incident, stricter care would be taken. However, on This level of negligence is unacceptable for a company of Royal Caribbean’s standard. I am req Please confirm receipt of this letter and advise on next steps. Sincerely, Yitzchak Cohen Booking Number 5603783 Cabin Number 8732 Contact Information 347-893-4329"</p>
+                                <p class="text-text-light italic text-sm mb-2">"Subject: Urgent Complaint  Repeated Allergy Negligence on Symphony of the Seas (Jan 11 Dear Royal Caribbean Guest Relations, I am writing to formally report a serious issue we experienced during our recent sailing on Sy You would expect that after such a serious incident, stricter care would be taken. However, on This level of negligence is unacceptable for a company of Royal Caribbeans standard. I am req Please confirm receipt of this letter and advise on next steps. Sincerely, Yitzchak Cohen Booking Number 5603783 Cabin Number 8732 Contact Information 347-893-4329"</p>
                                 <p class="text-text-light text-sm">Summary: Serious negligence regarding food allergies occurred multiple times during the Symphony of the Seas cruise.</p>
                             </div>
                             <div class="feedback-item bg-bg-dark-light/50 p-4 rounded-lg border border-border-light/50 shadow-inner">
@@ -377,12 +384,12 @@
                             </div>
                             <div class="feedback-item bg-bg-dark-light/50 p-4 rounded-lg border border-border-light/50 shadow-inner">
                                 <p class="text-text-white font-medium mb-1">User ID: 9635</p>
-                                <p class="text-text-light italic text-sm mb-2">"The food feels like it’s produced for quantity vs quality, and the clientele is downmar"</p>
+                                <p class="text-text-light italic text-sm mb-2">"The food feels like its produced for quantity vs quality, and the clientele is downmar"</p>
                                 <p class="text-text-light text-sm">Summary: Food quality felt mass-produced and the guest noted a change in the overall clientele.</p>
                             </div>
                             <div class="feedback-item bg-bg-dark-light/50 p-4 rounded-lg border border-border-light/50 shadow-inner">
                                 <p class="text-text-white font-medium mb-1">User ID: 9175</p>
-                                <p class="text-text-light italic text-sm mb-2">"Comida kosher não tão satisfstória"</p>
+                                <p class="text-text-light italic text-sm mb-2">"Comida kosher no to satisfstria"</p>
                                 <p class="text-text-light text-sm">Summary: The quality of the kosher food provided was not considered satisfactory by the guest.</p>
                             </div>
                             <div class="feedback-item bg-bg-dark-light/50 p-4 rounded-lg border border-border-light/50 shadow-inner">
@@ -432,7 +439,7 @@
                             </div>
                             <div class="feedback-item bg-bg-dark-light/50 p-4 rounded-lg border border-border-light/50 shadow-inner">
                                 <p class="text-text-white font-medium mb-1">User ID: 14607</p>
-                                <p class="text-text-light italic text-sm mb-2">"I wish that more of the restaurants didn’t cost extra. I understand why some of them d"</p>
+                                <p class="text-text-light italic text-sm mb-2">"I wish that more of the restaurants didnt cost extra. I understand why some of them d"</p>
                                 <p class="text-text-light text-sm">Summary: The guest wished that more of the onboard specialty restaurants were complimentary.</p>
                             </div>
                             <div class="feedback-item bg-bg-dark-light/50 p-4 rounded-lg border border-border-light/50 shadow-inner">
@@ -446,8 +453,8 @@
 
                 <!-- Entertainment -->
                 <div class="col-span-1 md:col-span-1 lg:col-span-1">
-                    <div class="category-card bg-card-glass backdrop-blur-lg border border-border-light rounded-2xl p-6 shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-102">
-                        <button class="accordion-toggle w-full text-left flex justify-between items-center pb-4 cursor-pointer">
+                    <div class="category-card h-full bg-card-glass backdrop-blur-lg border border-border-light rounded-2xl p-6 shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-102">
+                        <button class="accordion-toggle w-full text-left flex justify-between items-center pb-4 cursor-pointer min-h-[72px]">
                             <h3 class="text-2xl font-semibold text-text-white">Entertainment <span class="text-accent-teal">(18 issues)</span></h3>
                             <span class="accordion-icon text-accent-teal">
                                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-5 h-5">
@@ -463,7 +470,7 @@
                             </div>
                             <div class="feedback-item bg-bg-dark-light/50 p-4 rounded-lg border border-border-light/50 shadow-inner">
                                 <p class="text-text-white font-medium mb-1">User ID: 11183</p>
-                                <p class="text-text-light italic text-sm mb-2">"I love RC. There are some things I don’t. Karaoke shouldn’t be in On Air, it needs to"</p>
+                                <p class="text-text-light italic text-sm mb-2">"I love RC. There are some things I dont. Karaoke shouldnt be in On Air, it needs to"</p>
                                 <p class="text-text-light text-sm">Summary: Karaoke should be moved to a larger venue to accommodate the high number of guests.</p>
                             </div>
                             <div class="feedback-item bg-bg-dark-light/50 p-4 rounded-lg border border-border-light/50 shadow-inner">
@@ -488,12 +495,12 @@
                             </div>
                             <div class="feedback-item bg-bg-dark-light/50 p-4 rounded-lg border border-border-light/50 shadow-inner">
                                 <p class="text-text-white font-medium mb-1">User ID: 11599</p>
-                                <p class="text-text-light italic text-sm mb-2">"Sugiero realizar al menos un show más que solo involucre ver y oír, actuar, bailar, en"</p>
+                                <p class="text-text-light italic text-sm mb-2">"Sugiero realizar al menos un show ms que solo involucre ver y or, actuar, bailar, en"</p>
                                 <p class="text-text-light text-sm">Summary: The guest suggested adding more shows focused on performance, dance, and live music.</p>
                             </div>
                             <div class="feedback-item bg-bg-dark-light/50 p-4 rounded-lg border border-border-light/50 shadow-inner">
                                 <p class="text-text-white font-medium mb-1">User ID: 12717</p>
-                                <p class="text-text-light italic text-sm mb-2">"No me ha gustado nada la Animación del Barco. Sobre todo lo he echado de menos los dos días de navegación. No concibo u"</p>
+                                <p class="text-text-light italic text-sm mb-2">"No me ha gustado nada la Animacin del Barco. Sobre todo lo he echado de menos los dos das de navegacin. No concibo u"</p>
                                 <p class="text-text-light text-sm">Summary: The guest was very dissatisfied with the ship's animation and entertainment program during sea days.</p>
                             </div>
                             <div class="feedback-item bg-bg-dark-light/50 p-4 rounded-lg border border-border-light/50 shadow-inner">
@@ -503,7 +510,7 @@
                             </div>
                             <div class="feedback-item bg-bg-dark-light/50 p-4 rounded-lg border border-border-light/50 shadow-inner">
                                 <p class="text-text-white font-medium mb-1">User ID: 10698</p>
-                                <p class="text-text-light italic text-sm mb-2">"I found that the comedy shows this time were too vulgar. Lots of use of the F word, wh That said, the Hair Spray show was phenomenal! Broadway quality. The aqua shows were great as Pool areas are too small for the crowd size, but I think that’s the case with all ships. It would be fun to have a game show like Family Fued that’s good for the whole family to atten"</p>
+                                <p class="text-text-light italic text-sm mb-2">"I found that the comedy shows this time were too vulgar. Lots of use of the F word, wh That said, the Hair Spray show was phenomenal! Broadway quality. The aqua shows were great as Pool areas are too small for the crowd size, but I think thats the case with all ships. It would be fun to have a game show like Family Fued thats good for the whole family to atten"</p>
                                 <p class="text-text-light text-sm">Summary: The comedy shows were too vulgar, though other performances like Hairspray were phenomenal.</p>
                             </div>
                             <div class="feedback-item bg-bg-dark-light/50 p-4 rounded-lg border border-border-light/50 shadow-inner">
@@ -513,7 +520,7 @@
                             </div>
                             <div class="feedback-item bg-bg-dark-light/50 p-4 rounded-lg border border-border-light/50 shadow-inner">
                                 <p class="text-text-white font-medium mb-1">User ID: 11313</p>
-                                <p class="text-text-light italic text-sm mb-2">"It was very fun. Some of the games and trivia’s weren’t as organized as other cruise li"</p>
+                                <p class="text-text-light italic text-sm mb-2">"It was very fun. Some of the games and trivias werent as organized as other cruise li"</p>
                                 <p class="text-text-light text-sm">Summary: Some of the games and trivia sessions were not as well-organized as on other cruise lines.</p>
                             </div>
                             <div class="feedback-item bg-bg-dark-light/50 p-4 rounded-lg border border-border-light/50 shadow-inner">
@@ -523,7 +530,7 @@
                             </div>
                             <div class="feedback-item bg-bg-dark-light/50 p-4 rounded-lg border border-border-light/50 shadow-inner">
                                 <p class="text-text-white font-medium mb-1">User ID: 10553</p>
-                                <p class="text-text-light italic text-sm mb-2">"I really liked how I’m treated on Royal by the crew. What I missed was more activities"</p>
+                                <p class="text-text-light italic text-sm mb-2">"I really liked how Im treated on Royal by the crew. What I missed was more activities"</p>
                                 <p class="text-text-light text-sm">Summary: The guest wished for more activities and things to do during the evenings.</p>
                             </div>
                             <div class="feedback-item bg-bg-dark-light/50 p-4 rounded-lg border border-border-light/50 shadow-inner">
@@ -552,8 +559,8 @@
 
                 <!-- Cabin/Comfort -->
                 <div class="col-span-1 md:col-span-1 lg:col-span-1">
-                    <div class="category-card bg-card-glass backdrop-blur-lg border border-border-light rounded-2xl p-6 shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-102">
-                        <button class="accordion-toggle w-full text-left flex justify-between items-center pb-4 cursor-pointer">
+                    <div class="category-card h-full bg-card-glass backdrop-blur-lg border border-border-light rounded-2xl p-6 shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-102">
+                        <button class="accordion-toggle w-full text-left flex justify-between items-center pb-4 cursor-pointer min-h-[72px]">
                             <h3 class="text-2xl font-semibold text-text-white">Cabin/Comfort <span class="text-accent-teal">(7 issues)</span></h3>
                             <span class="accordion-icon text-accent-teal">
                                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-5 h-5">
@@ -569,7 +576,7 @@
                             </div>
                             <div class="feedback-item bg-bg-dark-light/50 p-4 rounded-lg border border-border-light/50 shadow-inner">
                                 <p class="text-text-white font-medium mb-1">User ID: 10232</p>
-                                <p class="text-text-light italic text-sm mb-2">"Not sure where to start… We paid quite a bit of money for a Junior suite, this time ar"</p>
+                                <p class="text-text-light italic text-sm mb-2">"Not sure where to start We paid quite a bit of money for a Junior suite, this time ar"</p>
                                 <p class="text-text-light text-sm">Summary: The guest felt the value for the junior suite did not meet expectations this time.</p>
                             </div>
                             <div class="feedback-item bg-bg-dark-light/50 p-4 rounded-lg border border-border-light/50 shadow-inner">
@@ -579,12 +586,12 @@
                             </div>
                             <div class="feedback-item bg-bg-dark-light/50 p-4 rounded-lg border border-border-light/50 shadow-inner">
                                 <p class="text-text-white font-medium mb-1">User ID: 6684</p>
-                                <p class="text-text-light italic text-sm mb-2">"Acho um absurdo não ter ao menos uma garrafa de água nos quartos. Meu pai de 86 anos pre"</p>
+                                <p class="text-text-light italic text-sm mb-2">"Acho um absurdo no ter ao menos uma garrafa de gua nos quartos. Meu pai de 86 anos pre"</p>
                                 <p class="text-text-light text-sm">Summary: The guest was upset that complimentary bottled water was not provided in the staterooms.</p>
                             </div>
                             <div class="feedback-item bg-bg-dark-light/50 p-4 rounded-lg border border-border-light/50 shadow-inner">
                                 <p class="text-text-white font-medium mb-1">User ID: 7200</p>
-                                <p class="text-text-light italic text-sm mb-2">"RCL bed mattresses are uncomfortable for our “Senior” bone and back aches"</p>
+                                <p class="text-text-light italic text-sm mb-2">"RCL bed mattresses are uncomfortable for our Senior bone and back aches"</p>
                                 <p class="text-text-light text-sm">Summary: The mattresses were uncomfortable, particularly for senior guests with back and bone aches.</p>
                             </div>
                             <div class="feedback-item bg-bg-dark-light/50 p-4 rounded-lg border border-border-light/50 shadow-inner">
@@ -602,9 +609,9 @@
                 </div>
 
                 <!-- Staff/Service -->
-                <div class="col-span-1 md:col-span-2 lg:col-span-2">
-                    <div class="category-card bg-card-glass backdrop-blur-lg border border-border-light rounded-2xl p-6 shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-102">
-                        <button class="accordion-toggle w-full text-left flex justify-between items-center pb-4 cursor-pointer">
+                <div class="col-span-1">
+                    <div class="category-card h-full bg-card-glass backdrop-blur-lg border border-border-light rounded-2xl p-6 shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-102">
+                        <button class="accordion-toggle w-full text-left flex justify-between items-center pb-4 cursor-pointer min-h-[72px]">
                             <h3 class="text-2xl font-semibold text-text-white">Staff/Service <span class="text-accent-teal">(16 issues)</span></h3>
                             <span class="accordion-icon text-accent-teal">
                                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-5 h-5">
@@ -620,7 +627,7 @@
                             </div>
                             <div class="feedback-item bg-bg-dark-light/50 p-4 rounded-lg border border-border-light/50 shadow-inner">
                                 <p class="text-text-white font-medium mb-1">User ID: 7145</p>
-                                <p class="text-text-light italic text-sm mb-2">"Casi no hay personal que hable español y eso dificulta la comunicación"</p>
+                                <p class="text-text-light italic text-sm mb-2">"Casi no hay personal que hable espaol y eso dificulta la comunicacin"</p>
                                 <p class="text-text-light text-sm">Summary: Lack of Spanish-speaking staff made communication difficult for the guest during the trip.</p>
                             </div>
                             <div class="feedback-item bg-bg-dark-light/50 p-4 rounded-lg border border-border-light/50 shadow-inner">
@@ -670,12 +677,12 @@
                             </div>
                             <div class="feedback-item bg-bg-dark-light/50 p-4 rounded-lg border border-border-light/50 shadow-inner">
                                 <p class="text-text-white font-medium mb-1">User ID: 7732</p>
-                                <p class="text-text-light italic text-sm mb-2">"My room attendant was not friendly. Did his job. Casino bartender’s over worked. Need mo"</p>
+                                <p class="text-text-light italic text-sm mb-2">"My room attendant was not friendly. Did his job. Casino bartenders over worked. Need mo"</p>
                                 <p class="text-text-light text-sm">Summary: The room attendant was unfriendly and the casino bartenders appeared to be overworked.</p>
                             </div>
                             <div class="feedback-item bg-bg-dark-light/50 p-4 rounded-lg border border-border-light/50 shadow-inner">
                                 <p class="text-text-white font-medium mb-1">User ID: 8596</p>
-                                <p class="text-text-light italic text-sm mb-2">"The quality of service from the Crown & Anchor staff—particularly Cindy—was subpar. The That said, I would like to recognize the Star Class room attendant and the main dining staff,"</p>
+                                <p class="text-text-light italic text-sm mb-2">"The quality of service from the Crown & Anchor staffparticularly Cindywas subpar. The That said, I would like to recognize the Star Class room attendant and the main dining staff,"</p>
                                 <p class="text-text-light text-sm">Summary: The quality of service from the Crown & Anchor staff was considered subpar and disappointing.</p>
                             </div>
                             <div class="feedback-item bg-bg-dark-light/50 p-4 rounded-lg border border-border-light/50 shadow-inner">
@@ -699,8 +706,8 @@
 
                 <!-- Crowding/Queues -->
                 <div class="col-span-1 md:col-span-1 lg:col-span-1">
-                    <div class="category-card bg-card-glass backdrop-blur-lg border border-border-light rounded-2xl p-6 shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-102">
-                        <button class="accordion-toggle w-full text-left flex justify-between items-center pb-4 cursor-pointer">
+                    <div class="category-card h-full bg-card-glass backdrop-blur-lg border border-border-light rounded-2xl p-6 shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-102">
+                        <button class="accordion-toggle w-full text-left flex justify-between items-center pb-4 cursor-pointer min-h-[72px]">
                             <h3 class="text-2xl font-semibold text-text-white">Crowding/Queues <span class="text-accent-teal">(23 issues)</span></h3>
                             <span class="accordion-icon text-accent-teal">
                                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-5 h-5">
@@ -716,7 +723,7 @@
                             </div>
                             <div class="feedback-item bg-bg-dark-light/50 p-4 rounded-lg border border-border-light/50 shadow-inner">
                                 <p class="text-text-white font-medium mb-1">User ID: 10309</p>
-                                <p class="text-text-light italic text-sm mb-2">"sehr viele leute, vorallem in den häfen beim anlegen. Die Musik war überall sehr laut."</p>
+                                <p class="text-text-light italic text-sm mb-2">"sehr viele leute, vorallem in den hfen beim anlegen. Die Musik war berall sehr laut."</p>
                                 <p class="text-text-light text-sm">Summary: There were too many people at the ports and the music was excessively loud.</p>
                             </div>
                             <div class="feedback-item bg-bg-dark-light/50 p-4 rounded-lg border border-border-light/50 shadow-inner">
@@ -746,12 +753,12 @@
                             </div>
                             <div class="feedback-item bg-bg-dark-light/50 p-4 rounded-lg border border-border-light/50 shadow-inner">
                                 <p class="text-text-white font-medium mb-1">User ID: 7224</p>
-                                <p class="text-text-light italic text-sm mb-2">"We felt that it was too crowded. Food in the dining room was acceptable, but not wonderful. We couldn’t find lounges to sit on due to people leaving towels on the seats. I think that sta We had a balcony room, but the outside glass on the balcony was very dirty. Not something the The drink packages of to expensive. The WiFi is to expensive"</p>
+                                <p class="text-text-light italic text-sm mb-2">"We felt that it was too crowded. Food in the dining room was acceptable, but not wonderful. We couldnt find lounges to sit on due to people leaving towels on the seats. I think that sta We had a balcony room, but the outside glass on the balcony was very dirty. Not something the The drink packages of to expensive. The WiFi is to expensive"</p>
                                 <p class="text-text-light text-sm">Summary: Overcrowding, inability to find chairs, and a dirty balcony were the primary guest issues.</p>
                             </div>
                             <div class="feedback-item bg-bg-dark-light/50 p-4 rounded-lg border border-border-light/50 shadow-inner">
                                 <p class="text-text-white font-medium mb-1">User ID: 11598</p>
-                                <p class="text-text-light italic text-sm mb-2">"Toooo crowded. The entire ship is waaay too loud. There were no quiet areas. even the card room was very loud. The deck chairs didn’t slide easily on the floor meaning that every time a neighbor from up t 4 rooms away adjusted their deck furniture the annoying rattling disturbed anyone in the area. Apparently 18+ means nothing regarding the solarium that is supposed to be there for adults on Tired of being upsold on everything. Access to the port is a pain. Coco Cay is NOT relaxing. For the same experience I could have stayed in Orlando. Having regularly sailed Royal for over 20 years, this is the first time I have questioned my d"</p>
+                                <p class="text-text-light italic text-sm mb-2">"Toooo crowded. The entire ship is waaay too loud. There were no quiet areas. even the card room was very loud. The deck chairs didnt slide easily on the floor meaning that every time a neighbor from up t 4 rooms away adjusted their deck furniture the annoying rattling disturbed anyone in the area. Apparently 18+ means nothing regarding the solarium that is supposed to be there for adults on Tired of being upsold on everything. Access to the port is a pain. Coco Cay is NOT relaxing. For the same experience I could have stayed in Orlando. Having regularly sailed Royal for over 20 years, this is the first time I have questioned my d"</p>
                                 <p class="text-text-light text-sm">Summary: The ship was excessively loud and crowded, with no quiet areas available for relaxation.</p>
                             </div>
                             <div class="feedback-item bg-bg-dark-light/50 p-4 rounded-lg border border-border-light/50 shadow-inner">
@@ -791,7 +798,7 @@
                             </div>
                             <div class="feedback-item bg-bg-dark-light/50 p-4 rounded-lg border border-border-light/50 shadow-inner">
                                 <p class="text-text-white font-medium mb-1">User ID: 8719</p>
-                                <p class="text-text-light italic text-sm mb-2">"still issues with lounge reservations that is not enforced and allowing under 18 in sol so those traveling without under 18 have no where to eat in peace and quiet….. hopefully this"</p>
+                                <p class="text-text-light italic text-sm mb-2">"still issues with lounge reservations that is not enforced and allowing under 18 in sol so those traveling without under 18 have no where to eat in peace and quiet.. hopefully this"</p>
                                 <p class="text-text-light text-sm">Summary: Issues included unenforced lounge reservations and children being allowed in adult-only areas.</p>
                             </div>
                             <div class="feedback-item bg-bg-dark-light/50 p-4 rounded-lg border border-border-light/50 shadow-inner">
@@ -816,7 +823,7 @@
                             </div>
                             <div class="feedback-item bg-bg-dark-light/50 p-4 rounded-lg border border-border-light/50 shadow-inner">
                                 <p class="text-text-white font-medium mb-1">User ID: 12277</p>
-                                <p class="text-text-light italic text-sm mb-2">"I just don’t think the experience was for me. I found the amount of people overwhelming"</p>
+                                <p class="text-text-light italic text-sm mb-2">"I just dont think the experience was for me. I found the amount of people overwhelming"</p>
                                 <p class="text-text-light text-sm">Summary: The guest found the large number of people on the ship to be overwhelming.</p>
                             </div>
                             <div class="feedback-item bg-bg-dark-light/50 p-4 rounded-lg border border-border-light/50 shadow-inner">
@@ -836,7 +843,7 @@
                             </div>
                             <div class="feedback-item bg-bg-dark-light/50 p-4 rounded-lg border border-border-light/50 shadow-inner">
                                 <p class="text-text-white font-medium mb-1">User ID: 9148</p>
-                                <p class="text-text-light italic text-sm mb-2">"L’attente au windjammer. Le fait de ne pas avoir de table qui est assigné par l’équipe d"</p>
+                                <p class="text-text-light italic text-sm mb-2">"Lattente au windjammer. Le fait de ne pas avoir de table qui est assign par lquipe d"</p>
                                 <p class="text-text-light text-sm">Summary: The guest experienced long wait times and table seating issues at the Windjammer buffet.</p>
                             </div>
                             <div class="feedback-item bg-bg-dark-light/50 p-4 rounded-lg border border-border-light/50 shadow-inner">
@@ -850,8 +857,8 @@
 
                 <!-- Noise -->
                 <div class="col-span-1 md:col-span-1 lg:col-span-1">
-                    <div class="category-card bg-card-glass backdrop-blur-lg border border-border-light rounded-2xl p-6 shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-102">
-                        <button class="accordion-toggle w-full text-left flex justify-between items-center pb-4 cursor-pointer">
+                    <div class="category-card h-full bg-card-glass backdrop-blur-lg border border-border-light rounded-2xl p-6 shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-102">
+                        <button class="accordion-toggle w-full text-left flex justify-between items-center pb-4 cursor-pointer min-h-[72px]">
                             <h3 class="text-2xl font-semibold text-text-white">Noise <span class="text-accent-teal">(14 issues)</span></h3>
                             <span class="accordion-icon text-accent-teal">
                                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-5 h-5">
@@ -882,7 +889,7 @@
                             </div>
                             <div class="feedback-item bg-bg-dark-light/50 p-4 rounded-lg border border-border-light/50 shadow-inner">
                                 <p class="text-text-white font-medium mb-1">User ID: 10332</p>
-                                <p class="text-text-light italic text-sm mb-2">"Det er veldig mye støy. Det er høy musikk overalt. Spesielt når man ligger på solsenger"</p>
+                                <p class="text-text-light italic text-sm mb-2">"Det er veldig mye sty. Det er hy musikk overalt. Spesielt nr man ligger p solsenger"</p>
                                 <p class="text-text-light text-sm">Summary: There was a significant amount of noise and loud music throughout the ship's public areas.</p>
                             </div>
                             <div class="feedback-item bg-bg-dark-light/50 p-4 rounded-lg border border-border-light/50 shadow-inner">
@@ -907,7 +914,7 @@
                             </div>
                             <div class="feedback-item bg-bg-dark-light/50 p-4 rounded-lg border border-border-light/50 shadow-inner">
                                 <p class="text-text-white font-medium mb-1">User ID: 10585</p>
-                                <p class="text-text-light italic text-sm mb-2">"Because celebrity is quieter so that’s my next cruise."</p>
+                                <p class="text-text-light italic text-sm mb-2">"Because celebrity is quieter so thats my next cruise."</p>
                                 <p class="text-text-light text-sm">Summary: The guest plans to switch to Celebrity Cruises because it offers a much quieter atmosphere.</p>
                             </div>
                             <div class="feedback-item bg-bg-dark-light/50 p-4 rounded-lg border border-border-light/50 shadow-inner">
@@ -936,8 +943,8 @@
 
                 <!-- Other -->
                 <div class="col-span-1 md:col-span-2 lg:col-span-3">
-                    <div class="category-card bg-card-glass backdrop-blur-lg border border-border-light rounded-2xl p-6 shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-102">
-                        <button class="accordion-toggle w-full text-left flex justify-between items-center pb-4 cursor-pointer">
+                    <div class="category-card h-full bg-card-glass backdrop-blur-lg border border-border-light rounded-2xl p-6 shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-102">
+                        <button class="accordion-toggle w-full text-left flex justify-between items-center pb-4 cursor-pointer min-h-[72px]">
                             <h3 class="text-2xl font-semibold text-text-white">Other <span class="text-accent-teal">(48 issues)</span></h3>
                             <span class="accordion-icon text-accent-teal">
                                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-5 h-5">
@@ -968,7 +975,7 @@
                             </div>
                             <div class="feedback-item bg-bg-dark-light/50 p-4 rounded-lg border border-border-light/50 shadow-inner">
                                 <p class="text-text-white font-medium mb-1">User ID: 10305</p>
-                                <p class="text-text-light italic text-sm mb-2">"We cruised with Royal before and have loved it in the past but had noticed some change - experienced Flo rider guests hogging it the entire time… kept getting back in line so it was - Cococay water was bone chillingly cold… couldn’t get in at all. All the kids’ lips were purp - Shows were far too loud - No Pac man machine at playmakers.. there is a picture of one on your website but wasn’t when - More Coke freestyle machines. One by el loco fresh was always always broken - Both ice cream machines need to be open the whole time and we need bowls… it’s so hot, it me - No chairs / people reserving chairs. The pink signs telling people not to reserve them do ab - The quality of the dining room steak is absolutely terrible… it’s paper thin with tons of fa - terrible TV channel options - Too much upselling… everything under the sun costs extra. The dining room food quality has g - the staff used to help people on the flow rider, now they don’t. My spouse spent hours and h - Puerto Plata port… Taino Bay should only hold one ship!! My family did several circles aroun - Arcade games were too expensive… $2.50USD per piece? That’s over $3CAD per game… - They should have different skill level open skating sessions - No ranch, sweet n sour or bbq for the chicken fingers. Only ketchup or mayo… - You guys used to have an ice cream machine (on allure and maybe even oasis) that was strawbe - Casino staff not friendly at all - Mac n cheese was excellent - Beds were very comfortable"</p>
+                                <p class="text-text-light italic text-sm mb-2">"We cruised with Royal before and have loved it in the past but had noticed some change - experienced Flo rider guests hogging it the entire time kept getting back in line so it was - Cococay water was bone chillingly cold couldnt get in at all. All the kids lips were purp - Shows were far too loud - No Pac man machine at playmakers.. there is a picture of one on your website but wasnt when - More Coke freestyle machines. One by el loco fresh was always always broken - Both ice cream machines need to be open the whole time and we need bowls its so hot, it me - No chairs / people reserving chairs. The pink signs telling people not to reserve them do ab - The quality of the dining room steak is absolutely terrible its paper thin with tons of fa - terrible TV channel options - Too much upselling everything under the sun costs extra. The dining room food quality has g - the staff used to help people on the flow rider, now they dont. My spouse spent hours and h - Puerto Plata port Taino Bay should only hold one ship!! My family did several circles aroun - Arcade games were too expensive $2.50USD per piece? Thats over $3CAD per game - They should have different skill level open skating sessions - No ranch, sweet n sour or bbq for the chicken fingers. Only ketchup or mayo - You guys used to have an ice cream machine (on allure and maybe even oasis) that was strawbe - Casino staff not friendly at all - Mac n cheese was excellent - Beds were very comfortable"</p>
                                 <p class="text-text-light text-sm">Summary: Guest reported multiple issues including loud shows, broken machines, cold water, and declining food quality.</p>
                             </div>
                             <div class="feedback-item bg-bg-dark-light/50 p-4 rounded-lg border border-border-light/50 shadow-inner">
@@ -988,7 +995,7 @@
                             </div>
                             <div class="feedback-item bg-bg-dark-light/50 p-4 rounded-lg border border-border-light/50 shadow-inner">
                                 <p class="text-text-white font-medium mb-1">User ID: 3646</p>
-                                <p class="text-text-light italic text-sm mb-2">"Teure Getränkepakete, kein Tischwein."</p>
+                                <p class="text-text-light italic text-sm mb-2">"Teure Getrnkepakete, kein Tischwein."</p>
                                 <p class="text-text-light text-sm">Summary: The drink packages were expensive and no table wine was provided.</p>
                             </div>
                             <div class="feedback-item bg-bg-dark-light/50 p-4 rounded-lg border border-border-light/50 shadow-inner">
@@ -1003,7 +1010,7 @@
                             </div>
                             <div class="feedback-item bg-bg-dark-light/50 p-4 rounded-lg border border-border-light/50 shadow-inner">
                                 <p class="text-text-white font-medium mb-1">User ID: 12255</p>
-                                <p class="text-text-light italic text-sm mb-2">"La app anda muy mal, éramos 7 era imposible comunicarnos. Mínimo deberían tener el Wha Las camas muy viejas e incómodas, almohadas muy gastadas. Poca diversión para gente sola."</p>
+                                <p class="text-text-light italic text-sm mb-2">"La app anda muy mal, ramos 7 era imposible comunicarnos. Mnimo deberan tener el Wha Las camas muy viejas e incmodas, almohadas muy gastadas. Poca diversin para gente sola."</p>
                                 <p class="text-text-light text-sm">Summary: Issues included a malfunctioning app, uncomfortable beds, and limited entertainment for solo travelers.</p>
                             </div>
                             <div class="feedback-item bg-bg-dark-light/50 p-4 rounded-lg border border-border-light/50 shadow-inner">
@@ -1038,7 +1045,7 @@
                             </div>
                             <div class="feedback-item bg-bg-dark-light/50 p-4 rounded-lg border border-border-light/50 shadow-inner">
                                 <p class="text-text-white font-medium mb-1">User ID: 6139</p>
-                                <p class="text-text-light italic text-sm mb-2">"We’ve been on other cruises lines we liked better and smaller ships."</p>
+                                <p class="text-text-light italic text-sm mb-2">"Weve been on other cruises lines we liked better and smaller ships."</p>
                                 <p class="text-text-light text-sm">Summary: The guest preferred other cruise lines and smaller ship sizes over this experience.</p>
                             </div>
                             <div class="feedback-item bg-bg-dark-light/50 p-4 rounded-lg border border-border-light/50 shadow-inner">
@@ -1058,12 +1065,12 @@
                             </div>
                             <div class="feedback-item bg-bg-dark-light/50 p-4 rounded-lg border border-border-light/50 shadow-inner">
                                 <p class="text-text-white font-medium mb-1">User ID: 14668</p>
-                                <p class="text-text-light italic text-sm mb-2">"Ich finde es schade, dass für viele Sportkurse oder für die Dampfbäder zusätzliche Kos"</p>
+                                <p class="text-text-light italic text-sm mb-2">"Ich finde es schade, dass fr viele Sportkurse oder fr die Dampfbder zustzliche Kos"</p>
                                 <p class="text-text-light text-sm">Summary: The guest was disappointed by extra costs for sports classes and steam bath access.</p>
                             </div>
                             <div class="feedback-item bg-bg-dark-light/50 p-4 rounded-lg border border-border-light/50 shadow-inner">
                                 <p class="text-text-white font-medium mb-1">User ID: 9182</p>
-                                <p class="text-text-light italic text-sm mb-2">"My least favorite was paying the same price for printed pics á s for digital access. This was c"</p>
+                                <p class="text-text-light italic text-sm mb-2">"My least favorite was paying the same price for printed pics  s for digital access. This was c"</p>
                                 <p class="text-text-light text-sm">Summary: The guest disliked paying the same high price for digital photo access as printed copies.</p>
                             </div>
                             <div class="feedback-item bg-bg-dark-light/50 p-4 rounded-lg border border-border-light/50 shadow-inner">
@@ -1078,7 +1085,7 @@
                             </div>
                             <div class="feedback-item bg-bg-dark-light/50 p-4 rounded-lg border border-border-light/50 shadow-inner">
                                 <p class="text-text-white font-medium mb-1">User ID: 11222</p>
-                                <p class="text-text-light italic text-sm mb-2">"We’ve been on Disney cruise line in Royal Caribbean been on royal Caribbean twice and w"</p>
+                                <p class="text-text-light italic text-sm mb-2">"Weve been on Disney cruise line in Royal Caribbean been on royal Caribbean twice and w"</p>
                                 <p class="text-text-light text-sm">Summary: The guest preferred their experiences with Disney Cruise Line over this Royal Caribbean trip.</p>
                             </div>
                             <div class="feedback-item bg-bg-dark-light/50 p-4 rounded-lg border border-border-light/50 shadow-inner">
@@ -1138,7 +1145,7 @@
                             </div>
                             <div class="feedback-item bg-bg-dark-light/50 p-4 rounded-lg border border-border-light/50 shadow-inner">
                                 <p class="text-text-white font-medium mb-1">User ID: 11441</p>
-                                <p class="text-text-light italic text-sm mb-2">"Teen kids pushing elevator doors closed as we rush to the elevator. Phone calls leaving sale messages on n the phone (spa). Card room, employees putting our puzzles back into the box when we were not done after 6-10 ho No nice chair to sit on in the room-nothing to lean back on. I have to use my walker or the toilet to sit on. Very weak soft drinks from the dispensers at all the stations, these are not the payed for dri Lots of crumbs on the hallway floors. All the maps on deck 11 are wrong for the rooms. Food at the buffets 75% of the time was hardly warm. Ice cream was very icy not creamy 25% of the time. Too many things on and off the ship are too expensive. Very difficult to find out about things on the phone. Too many places to eat on the ship that you have to go through before you come to the ones we Too many things being sold-it’s all about the money to you. The 2 times I had octopus it was like eating a rubber band. Too many crying kids. No outlets for charging phones at the card room. The waitress at our dinning room were very good excellent. I also am very disappointed that our celebrity cruise points didn’t count towards our crown &"</p>
+                                <p class="text-text-light italic text-sm mb-2">"Teen kids pushing elevator doors closed as we rush to the elevator. Phone calls leaving sale messages on n the phone (spa). Card room, employees putting our puzzles back into the box when we were not done after 6-10 ho No nice chair to sit on in the room-nothing to lean back on. I have to use my walker or the toilet to sit on. Very weak soft drinks from the dispensers at all the stations, these are not the payed for dri Lots of crumbs on the hallway floors. All the maps on deck 11 are wrong for the rooms. Food at the buffets 75% of the time was hardly warm. Ice cream was very icy not creamy 25% of the time. Too many things on and off the ship are too expensive. Very difficult to find out about things on the phone. Too many places to eat on the ship that you have to go through before you come to the ones we Too many things being sold-its all about the money to you. The 2 times I had octopus it was like eating a rubber band. Too many crying kids. No outlets for charging phones at the card room. The waitress at our dinning room were very good excellent. I also am very disappointed that our celebrity cruise points didnt count towards our crown &"</p>
                                 <p class="text-text-light text-sm">Summary: Extensive complaints included misbehaving teens, cold food, broken maps, and lack of stateroom comfort.</p>
                             </div>
                             <div class="feedback-item bg-bg-dark-light/50 p-4 rounded-lg border border-border-light/50 shadow-inner">
@@ -1168,7 +1175,7 @@
                             </div>
                             <div class="feedback-item bg-bg-dark-light/50 p-4 rounded-lg border border-border-light/50 shadow-inner">
                                 <p class="text-text-white font-medium mb-1">User ID: 10544</p>
-                                <p class="text-text-light italic text-sm mb-2">"Très bien mangé très bon service il ne manque de rien sur le bateau ce que j ai moins"</p>
+                                <p class="text-text-light italic text-sm mb-2">"Trs bien mang trs bon service il ne manque de rien sur le bateau ce que j ai moins"</p>
                                 <p class="text-text-light text-sm">Summary: The guest mentioned some aspects they liked less despite having a generally good experience.</p>
                             </div>
                             <div class="feedback-item bg-bg-dark-light/50 p-4 rounded-lg border border-border-light/50 shadow-inner">
@@ -1178,7 +1185,7 @@
                             </div>
                             <div class="feedback-item bg-bg-dark-light/50 p-4 rounded-lg border border-border-light/50 shadow-inner">
                                 <p class="text-text-white font-medium mb-1">User ID: 8710</p>
-                                <p class="text-text-light italic text-sm mb-2">"No me parece adecuado que el área de fumado este cerca del área de niños, debería estar"</p>
+                                <p class="text-text-light italic text-sm mb-2">"No me parece adecuado que el rea de fumado este cerca del rea de nios, debera estar"</p>
                                 <p class="text-text-light text-sm">Summary: The guest disliked that the smoking area was located in close proximity to the children's area.</p>
                             </div>
                             <div class="feedback-item bg-bg-dark-light/50 p-4 rounded-lg border border-border-light/50 shadow-inner">
@@ -1198,7 +1205,7 @@
                             </div>
                             <div class="feedback-item bg-bg-dark-light/50 p-4 rounded-lg border border-border-light/50 shadow-inner">
                                 <p class="text-text-white font-medium mb-1">User ID: 7670</p>
-                                <p class="text-text-light italic text-sm mb-2">"Det dukket opp mange skjulte kostnader underveis fra Royal Carribien. Lite og begrenset badeområdet, og ingen muligheter for barn til å hoppe og herje litt, fikk ti Har barn som ikke tåler laktose og var ingen is alternativer til dem."</p>
+                                <p class="text-text-light italic text-sm mb-2">"Det dukket opp mange skjulte kostnader underveis fra Royal Carribien. Lite og begrenset badeomrdet, og ingen muligheter for barn til  hoppe og herje litt, fikk ti Har barn som ikke tler laktose og var ingen is alternativer til dem."</p>
                                 <p class="text-text-light text-sm">Summary: Issues included hidden costs, limited play areas, and no lactose-free dessert options for children.</p>
                             </div>
                             <div class="feedback-item bg-bg-dark-light/50 p-4 rounded-lg border border-border-light/50 shadow-inner">
@@ -1208,7 +1215,7 @@
                             </div>
                             <div class="feedback-item bg-bg-dark-light/50 p-4 rounded-lg border border-border-light/50 shadow-inner">
                                 <p class="text-text-white font-medium mb-1">User ID: 6164</p>
-                                <p class="text-text-light italic text-sm mb-2">"Gosto muito da Royal Caribbean e já estive em outros cruzeiros, mas senti algumas piora"</p>
+                                <p class="text-text-light italic text-sm mb-2">"Gosto muito da Royal Caribbean e j estive em outros cruzeiros, mas senti algumas piora"</p>
                                 <p class="text-text-light text-sm">Summary: A regular guest noticed a decline in quality compared to their previous Royal Caribbean cruises.</p>
                             </div>
                             <div class="feedback-item bg-bg-dark-light/50 p-4 rounded-lg border border-border-light/50 shadow-inner">
@@ -1255,4 +1262,3 @@
     </div>
 </body>
 </html>
-
